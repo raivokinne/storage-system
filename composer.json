@@ -1,0 +1,17 @@
+{
+    "name": "raivokinne/storage",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+						"Core\\": "core/",
+						"Database\\": "database"
+        }
+    },
+    "authors": [
+        {
+            "name": "RaivoKinne",
+            "email": "120594466+raivokinne@users.noreply.github.com"
+        }
+    ],
+    "require": {}
+}
