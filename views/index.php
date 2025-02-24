@@ -8,6 +8,8 @@
         <title>Storage</title>
     </head>
     <body>
-        <h1 class="text-3xl font-bold underline">Hello world!</h1>
+        <div class="container mx-auto w-full p-4">
+            <h1 class="text-3xl font-bold text-blue-900">Hello world!</h1>
+        </div>
     </body>
 </html>
