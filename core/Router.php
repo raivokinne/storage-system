@@ -21,7 +21,8 @@ class Router
 		self::$routes[] = [
 			'method' => $method,
 			'url' => $url,
-			'controller' => $controller
+			'controller' => $controller,
+			'middleware' => null
 		];
 
 		return new static;
@@ -110,10 +111,10 @@ class Router
 	public static function route($uri, $method)
 	{
 		foreach (self::$routes as $route) {
-			if ($route['uri'] === $uri && $route['method'] === strtoupper($method)) {
+			if ($route['url'] === $uri && $route['method'] === strtoupper($method)) {
 				Middleware::resolve($route['middleware']);
 
-				return require base_path('Http/controllers/' . $route['controller']);
+				return require base_path('app/controllers/' . $route['controller']);
 			}
 		}
 

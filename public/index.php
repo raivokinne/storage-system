@@ -1,13 +1,22 @@
-<!doctype html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <meta lang="en" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
-        <title>Storage</title>
-    </head>
-    <body>
-        <h1 class="text-3xl font-bold underline">Hello world!</h1>
-    </body>
-</html>
+<?php
+
+const BASE_PATH = __DIR__.'/../';
+
+session_start();
+
+require BASE_PATH . 'vendor/autoload.php';
+require BASE_PATH . 'functions.php';
+
+$router = new \Core\Router;
+require BASE_PATH . '/routes/web.php';
+
+$uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+$method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
+
+try {
+    $router->route($uri, $method);
+} catch (\Exception $e) {
+    return redirect($router->previousUrl());
+}
+
+
