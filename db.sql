@@ -1,94 +1,95 @@
-CREATE DATABASE storage;
+CREATE DATABASE IF NOT EXISTS storage;
 USE storage;
 
-CREATE TABLE Users (
-    ID int NOT NULL AUTO_INCREMENT,
-    name varchar(50),
-    email varchar(255),
-    password varchar(255),
+CREATE TABLE IF NOT EXISTS Users (
+    ID INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     PRIMARY KEY (ID)
 );
 
-CREATE TABLE Suppliers (
-    ID int NOT NULL AUTO_INCREMENT,
-    name varchar(50),
+CREATE TABLE IF NOT EXISTS Suppliers (
+    ID INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID)
 );
 
-CREATE TABLE Products (
-    ID int NOT NULL AUTO_INCREMENT,
-    name varchar(50),
-    description varchar(255),
-    price int,
-    supplier_id int,
+CREATE TABLE IF NOT EXISTS Products (
+    ID INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    supplier_id INT NOT NULL,
     PRIMARY KEY (ID),
-    FOREIGN KEY (supplier_id) REFERENCES Suppliers(ID)
+    FOREIGN KEY (supplier_id) REFERENCES Suppliers(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Images (
-    ID int NOT NULL AUTO_INCREMENT,
-    product_id int,
-    image varchar(255),
+CREATE TABLE IF NOT EXISTS Images (
+    ID INT NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    image VARCHAR(255) NOT NULL,
     PRIMARY KEY (ID),
-    FOREIGN KEY (product_id) REFERENCES Products(ID)
+    FOREIGN KEY (product_id) REFERENCES Products(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Categories (
-    ID int NOT NULL AUTO_INCREMENT,
-    name varchar(50),
+CREATE TABLE IF NOT EXISTS Categories (
+    ID INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID)
 );
 
-CREATE TABLE ProductCategories (
-    product_id int,
-    category_id int,
+CREATE TABLE IF NOT EXISTS ProductCategories (
+    product_id INT NOT NULL,
+    category_id INT NOT NULL,
     PRIMARY KEY (product_id, category_id),
-    FOREIGN KEY (product_id) REFERENCES Products(ID),
-    FOREIGN KEY (category_id) REFERENCES Categories(ID)
+    FOREIGN KEY (product_id) REFERENCES Products(ID) ON DELETE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES Categories(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Actions (
-    ID int NOT NULL AUTO_INCREMENT,
-    user_id int,
-    action ENUM('view', 'like', 'comment', 'share'),
-    model varchar(50),
-    old_value varchar(255),
-    new_value varchar(255),
+CREATE TABLE IF NOT EXISTS Actions (
+    ID INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    action ENUM('view', 'like', 'comment', 'share') NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    old_value VARCHAR(255),
+    new_value VARCHAR(255),
     PRIMARY KEY (ID),
-    FOREIGN KEY (user_id) REFERENCES Users(ID)
+    FOREIGN KEY (user_id) REFERENCES Users(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Orders (
-    ID int NOT NULL AUTO_INCREMENT,
-    user_id int,
-    status ENUM('pending', 'completed', 'cancelled'),
-    product_id int,
-    quantity int,
+CREATE TABLE IF NOT EXISTS Orders (
+    ID INT NOT NULL AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    status ENUM('pending', 'completed', 'cancelled') NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
     PRIMARY KEY (ID),
-    FOREIGN KEY (user_id) REFERENCES Users(ID),
-    FOREIGN KEY (product_id) REFERENCES Products(ID)
+    FOREIGN KEY (user_id) REFERENCES Users(ID) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES Products(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Counts (
-    ID int NOT NULL AUTO_INCREMENT,
-    product_id int,
-    in_storage int,
-    sold int,
+CREATE TABLE IF NOT EXISTS Counts (
+    ID INT NOT NULL AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    in_storage INT NOT NULL DEFAULT 0,
+    sold INT NOT NULL DEFAULT 0,
     PRIMARY KEY (ID),
-    FOREIGN KEY (product_id) REFERENCES Products(ID)
+    FOREIGN KEY (product_id) REFERENCES Products(ID) ON DELETE CASCADE
 );
 
-CREATE TABLE Shelves (
-    ID int NOT NULL AUTO_INCREMENT,
-    name varchar(50),
+CREATE TABLE IF NOT EXISTS Shelves (
+    ID INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(50) NOT NULL,
     PRIMARY KEY (ID)
 );
 
-CREATE TABLE ShelfProducts (
-    ID int NOT NULL AUTO_INCREMENT,
-    shelf_id int,
-    product_id int,
+CREATE TABLE IF NOT EXISTS ShelfProducts (
+    ID INT NOT NULL AUTO_INCREMENT,
+    shelf_id INT NOT NULL,
+    product_id INT NOT NULL,
     PRIMARY KEY (ID),
-    FOREIGN KEY (shelf_id) REFERENCES Shelves(ID),
-    FOREIGN KEY (product_id) REFERENCES Products(ID)
+    FOREIGN KEY (shelf_id) REFERENCES Shelves(ID) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES Products(ID) ON DELETE CASCADE
 );
+
