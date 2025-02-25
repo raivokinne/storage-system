@@ -5,7 +5,13 @@ const BASE_PATH = __DIR__.'/../';
 session_start();
 
 require BASE_PATH . 'vendor/autoload.php';
-require BASE_PATH . 'functions.php';
+require BASE_PATH . 'core/functions.php';
+
+use Database\Database;
+
+$config = require BASE_PATH . 'config/database.php';
+
+Database::connect($config);
 
 $router = new \Core\Router;
 require BASE_PATH . '/routes/web.php';
@@ -18,5 +24,3 @@ try {
 } catch (\Exception $e) {
     return redirect($router->previousUrl());
 }
-
-

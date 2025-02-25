@@ -114,11 +114,11 @@ class Router
 			if ($route['url'] === $uri && $route['method'] === strtoupper($method)) {
 				Middleware::resolve($route['middleware']);
 
-				return require base_path('app/controllers/' . $route['controller']);
+				return require base_path('app/Controllers/' . $route['controller']. '.php');
 			}
 		}
 
-		self::abort();
+		self::abort(404, 'tu esi daunis');
 	}
 
 
