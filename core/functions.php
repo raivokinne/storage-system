@@ -36,3 +36,8 @@ function redirect($path)
     exit();
 }
 
+function component($component, $attributes = []) {
+    extract($attributes);
+    require base_path('views/components/' . $component . '.php');
+}
+
