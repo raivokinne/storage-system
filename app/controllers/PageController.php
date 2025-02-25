@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\User;
 
 $user = User::all();
+$id = 1;
 
-return view('index.view.php', [
-	'id' => 1
-]);
+view('index', compact('id'));
