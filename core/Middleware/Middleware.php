@@ -2,17 +2,21 @@
 
 namespace Core\Middleware;
 
+use Exception;
+
 class Middleware
 {
     public const MAP = [
         'guest' => Guest::class,
         'auth' => Auth::class,
     ];
+
     /**
-     * @return void
      * @param mixed $key
+     * @return void
+     * @throws Exception
      */
-    public static function resolve($key): void
+    public static function resolve(mixed $key): void
     {
         if (!$key) {
             return;
@@ -21,7 +25,7 @@ class Middleware
         $middleware = static::MAP[$key] ?? false;
 
         if (!$middleware) {
-            throw new \Exception("No matching middleware found for key '{$key}'.");
+            throw new Exception("No matching middleware found for key '{$key}'.");
         }
 
         (new $middleware)->handle();
