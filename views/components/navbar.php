@@ -22,6 +22,11 @@
                         Orders
                     </a>
                 </li>
+                <li>
+                    <a href="/actions" class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:border-b-2 hover:border-blue-600 transition-all duration-150">
+                        History
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="flex">
