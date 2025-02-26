@@ -142,6 +142,6 @@ class Router
 	public static function abort(int $code = 404, string $message = ''): void
 	{
 		http_response_code($code);
-		die($message);
+        view('404');
 	}
 }
