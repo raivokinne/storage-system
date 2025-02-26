@@ -8,4 +8,8 @@
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
     <title>Storage</title>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
+<nav class="bg-white shadow">
+    <?php component('navbar'); ?>
+</nav>
+<main>
