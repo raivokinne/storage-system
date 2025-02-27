@@ -245,58 +245,59 @@ class Validator
 		 * @param mixed $parameters
 		 */
 	protected function validateMax($field, $value, $parameters)
-	{
-		if (empty($value)) {
-			return true;
+    {
+        if (empty($value)) {
+            return true;
 
-			$max = $parameters[0] ?? 0;
+            $max = $parameters[0] ?? 0;
 
-			if (is_numeric($value)) {
-				return $value <= $max;
-			}
+            if (is_numeric($value)) {
+                return $value <= $max;
+            }
 
-			return mb_strlen($value) <= $max;
-		}
-		/**
-		 * @return bool
-		 * @param mixed $field
-		 * @param mixed $value
-		 * @param mixed $parameters
-		 */
-		protected function validateNumeric($field, $value, $parameters)
-		{
-			if (empty($value)) {
-				return true;
-			}
+            return mb_strlen($value) <= $max;
+        }
+    }
+    /**
+     * @return bool
+     * @param mixed $field
+     * @param mixed $value
+     * @param mixed $parameters
+     */
+    protected function validateNumeric($field, $value, $parameters)
+    {
+        if (empty($value)) {
+            return true;
+        }
 
-			return is_numeric($value);
-		}
-		/**
-		 * @return bool
-		 * @param mixed $field
-		 * @param mixed $value
-		 * @param mixed $parameters
-		 */
-		protected function validateString($field, $value, $parameters)
-		{
-			if (empty($value)) {
-				return true;
-			}
+        return is_numeric($value);
+    }
+    /**
+     * @return bool
+     * @param mixed $field
+     * @param mixed $value
+     * @param mixed $parameters
+     */
+    protected function validateString($field, $value, $parameters)
+    {
+        if (empty($value)) {
+            return true;
+        }
 
-			return is_string($value);
-		}
-		/**
-		 * @return bool|array
-		 * @param mixed $field
-		 * @param mixed $value
-		 * @param mixed $parameters
-		 */
-		protected function validateIn($field, $value, $parameters)
-		{
-			if (empty($value)) {
-				return true;
-			}
+        return is_string($value);
+    }
+    /**
+     * @return bool|array
+     * @param mixed $field
+     * @param mixed $value
+     * @param mixed $parameters
+     */
+    protected function validateIn($field, $value, $parameters)
+    {
+        if (empty($value)) {
+            return true;
+        }
 
-			return in_array($value, $parameters);
-		}
-	}
+        return in_array($value, $parameters);
+    }
+}

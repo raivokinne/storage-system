@@ -13,6 +13,7 @@
                         class="border py-1 px-4 my-2 rounded-xl"
                         required
                 />
+                <?= error('name'); ?>
                 <label for="password" class="font-light">Password</label>
                 <input
                         minlength="8"
@@ -23,7 +24,9 @@
                         placeholder="********"
                         pattern="((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
                         class="border py-1 px-4 my-2 rounded-xl"
-                        required/>
+                        required
+                />
+                <?= error('password'); ?>
                 <button type="submit" class="border mx-auto px-6 py-1.5 rounded-xl cursor-pointer">Login</button>
             </div>
         </form>
