@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     <link rel="icon" href="images/favicon.ico" type="image/x-icon" />
-    <title>Storage</title>
+    <link rel="stylesheet" href="../css/styles.css" type="text/css" />
+    <title><?= $title ?? 'Storage' ?></title>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
+<nav class="bg-white shadow">
+    <?php component('navbar'); ?>
+</nav>
+<main>

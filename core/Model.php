@@ -7,7 +7,7 @@ use Database\Database;
 class Model extends Database
 {
     protected static string $table = '';
-    protected static $statement = null;
+    protected static mixed $statement = null;
 
     public function hasMany(Model $model): Model
     {
@@ -50,7 +50,9 @@ class Model extends Database
         self::$statement->execute();
         return new static;
     }
+
     /**
+     * @param int $id
      * @return Model
      */
     public static function find(int $id): Model
@@ -78,9 +80,11 @@ class Model extends Database
         $query->execute($data);
         return new static;
     }
+
     /**
-     * @return Model
+     * @param int $id
      * @param array<int,mixed> $data
+     * @return Model
      */
     public static function update(int $id, array $data): Model
     {
@@ -94,7 +98,9 @@ class Model extends Database
         $query->execute($data);
         return new static;
     }
+
     /**
+     * @param int $id
      * @return Model
      */
     public static function delete(int $id): Model
@@ -104,7 +110,11 @@ class Model extends Database
         self::$statement->execute(['id' => $id]);
         return new static;
     }
+
     /**
+     * @param string $key
+     * @param string $operator
+     * @param string $value
      * @return Model
      */
     public static function where(string $key, string $operator, string $value): Model
@@ -131,6 +141,9 @@ class Model extends Database
     }
 
     /**
+     * @param string $table
+     * @param string $key
+     * @param string $value
      * @return Model
      */
     public static function join(string $table, string $key, string $value): Model
@@ -140,20 +153,25 @@ class Model extends Database
         self::$statement->execute();
         return new static;
     }
+
     /**
-     * @return Models
+     * @param string $key
+     * @return Model
      */
-    public static function groupBy(string $key): Models
+    public static function groupBy(string $key): Model
     {
         $sql = "SELECT * FROM " . static::$table . " GROUP BY " . $key;
         self::$statement = self::$connection->prepare($sql);
         self::$statement->execute();
         return new static;
     }
+
     /**
-     * @return Models
+     * @param string $key
+     * @param string $order
+     * @return Model
      */
-    public static function orderBy(string $key, string $order = 'ASC'): Models
+    public static function orderBy(string $key, string $order = 'ASC'): Model
     {
         $sql = static::$table . " ORDER BY " . $key . " " . $order;
         self::$statement = self::$connection->prepare($sql);
@@ -166,11 +184,11 @@ class Model extends Database
         return self::$statement->rowCount();
     }
     /**
-     * @return Models
+     * @return Model
      * @param mixed $query_string
      * @param mixed $params
      */
-    public static function execute($query_string, $params): Models
+    public static function execute(mixed $query_string, mixed $params): Model
     {
 
         $query = self::$connection->prepare($query_string);

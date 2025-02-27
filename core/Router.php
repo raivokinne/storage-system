@@ -3,10 +3,11 @@
 namespace Core;
 
 use Core\Middleware\Middleware;
+use Exception;
 
 class Router
 {
-	protected static $routes = [];
+	protected static array $routes = [];
 
 	/**
 	 * Add a route to the router.
@@ -16,7 +17,7 @@ class Router
 	 * @param mixed $controller
 	 * @return Router
 	 */
-	protected static function add(string $method, string $url, $controller): Router
+	protected static function add(string $method, string $url, mixed $controller): Router
 	{
 		self::$routes[] = [
 			'method' => $method,
@@ -35,7 +36,7 @@ class Router
 	 * @param mixed $controller
 	 * @return Router
 	 */
-	public static function get(string $url, $controller): Router
+	public static function get(string $url, mixed $controller): Router
 	{
 		return self::add('GET', $url, $controller);
 	}
@@ -47,7 +48,7 @@ class Router
 	 * @param mixed $controller
 	 * @return Router
 	 */
-	public static function post(string $url, $controller): Router
+	public static function post(string $url, mixed $controller): Router
 	{
 		return self::add('POST', $url, $controller);
 	}
@@ -59,7 +60,7 @@ class Router
 	 * @param mixed $controller
 	 * @return Router
 	 */
-	public static function put(string $url, $controller): Router
+	public static function put(string $url, mixed $controller): Router
 	{
 		return self::add('PUT', $url, $controller);
 	}
@@ -71,7 +72,7 @@ class Router
 	 * @param mixed $controller
 	 * @return Router
 	 */
-	public static function patch(string $url, $controller): Router
+	public static function patch(string $url, mixed $controller): Router
 	{
 		return self::add('PATCH', $url, $controller);
 	}
@@ -83,7 +84,7 @@ class Router
 	 * @param mixed $controller
 	 * @return Router
 	 */
-	public static function delete(string $url, $controller): Router
+	public static function delete(string $url, mixed $controller): Router
 	{
 		return self::add('DELETE', $url, $controller);
 	}
@@ -94,22 +95,22 @@ class Router
 	 * @param mixed $key
 	 * @return Router
 	 */
-	public static function only($key): Router
+	public static function only(mixed $key): Router
 	{
 		self::$routes[array_key_last(self::$routes)]['middleware'] = $key;
 		return new static;
 	}
 
-	/**
-	 * Dispatch the router and call the corresponding controller.
-	 *
-	 * @param string $method
-	 * @param string $url
-	 * @return void
-	 * @param mixed $uri
-	 */
-	public static function route($uri, $method)
-	{
+    /**
+     * Dispatch the router and call the corresponding controller.
+     *
+     * @param mixed $uri
+     * @param string $method
+     * @return mixed
+     * @throws Exception
+     */
+	public static function route(mixed $uri, string $method): mixed
+    {
 		foreach (self::$routes as $route) {
 			if ($route['url'] === $uri && $route['method'] === strtoupper($method)) {
 				Middleware::resolve($route['middleware']);
@@ -118,7 +119,8 @@ class Router
 			}
 		}
 
-		self::abort(404, 'tu esi daunis');
+        self::abort(404, 'tu esi daunis');
+        return null;
 	}
 
 
@@ -142,6 +144,6 @@ class Router
 	public static function abort(int $code = 404, string $message = ''): void
 	{
 		http_response_code($code);
-		die($message);
+        view('404', compact('message'));
 	}
 }

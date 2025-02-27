@@ -2,4 +2,11 @@
 
 namespace App\Controllers;
 
-return view('index');
+use App\Models\User;
+
+$user = User::all();
+$id = 1;
+
+view('index', compact('id'));
+
+
