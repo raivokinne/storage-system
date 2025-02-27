@@ -30,6 +30,7 @@
             </ul>
         </div>
         <div class="flex">
+            <?php if (!auth()): ?>
             <ul class="flex space-x-4 pt-3">
                 <li>
                     <a href="/login" class="inline-flex bg-gradient-to-br from-blue-400 to-purple-500 rounded-l-3xl px-8 items-center py-2 text-sm font-bold text-gray-100 hover:to-blue-500 hover:from-purple-600 transition hover:scale-105 duration-400">
@@ -42,6 +43,20 @@
                     </a>
                 </li>
             </ul>
+            <?php else: ?>
+            <ul class="flex space-x-4 pt-3">
+                <li>
+                    <a href="/logout" class="inline-flex bg-gradient-to-br from-blue-400 to-purple-500 rounded-l-3xl px-8 items-center py-2 text-sm font-bold text-gray-100 hover:to-blue-500 hover:from-purple-600 transition hover:scale-105 duration-400">
+                        Logout
+                    </a>
+                </li>
+                <li>
+                    <a href="/profile" class="inline-flex items-center px-6 py-2 text-sm font-bold rounded-r-3xl text-gray-700 hover:text-blue-600 transition-all duration-400 border hover:scale-105 border-dashed">
+                        Profile
+                    </a>
+                </li>
+            </ul>
+            <?php endif ?>
         </div>
     </div>
 </div>

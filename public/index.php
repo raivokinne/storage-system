@@ -24,3 +24,5 @@ try {
 } catch (\Exception $e) {
     return redirect($router->previousUrl());
 }
+
+\Core\Session::unflash();
