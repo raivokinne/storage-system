@@ -1,15 +1,17 @@
 <?php
 
+use App\Controllers\Auth\LoginController;
+use App\Controllers\Auth\RegisterController;
+use App\Controllers\PageController;
+
 global $router;
 
-$router->get('/', 'PageController');
+$router->get('/', [PageController::class, 'index']);
 
-$router->get('/about', 'PageController@about');
+$router->get('/login', [LoginController::class, 'create']);
+$router->post('/login', [LoginController::class, 'store']);
 
-$router->get('/login', 'user/LoginController');
-$router->post('/login', 'user/LoginController');
+$router->get('/register', [RegisterController::class, 'create']);
+$router->post('/register', [RegisterController::class, 'store']);
 
-$router->get('/register', 'user/RegisterController');
-$router->post('/register', 'user/RegisterController');
-
-$router->get('/logout', 'user/LogoutController');
+$router->get('/logout', [LogoutController::class, 'index']);
