@@ -8,6 +8,7 @@
                         maxlength="50"
                         type="text"
                         name="name"
+                        value="<?= old('name') ?>"
                         placeholder="John"
                         class="border py-1 px-4 my-2 rounded-xl"
                         required
@@ -18,6 +19,7 @@
                         maxlength="50"
                         type="password"
                         name="password"
+                        value="<?= old('password') ?>"
                         placeholder="********"
                         pattern="((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
                         class="border py-1 px-4 my-2 rounded-xl"

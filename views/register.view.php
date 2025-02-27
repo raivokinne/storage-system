@@ -9,6 +9,7 @@
                     type="text"
                     name="name"
                     placeholder="John"
+                    value="<?= old('name') ?>"
                     class="border py-1 px-4 my-2 rounded-xl"
                     required
             />
@@ -20,6 +21,7 @@
                     type="email"
                     name="email"
                     placeholder="john.smith@example.com"
+                    value="<?= old('email') ?>"
                     class="border py-1 px-4 my-2 rounded-xl"
                     required
             />
@@ -31,6 +33,7 @@
                     type="password"
                     name="password"
                     placeholder="********"
+                    value="<?= old('password') ?>"
                     pattern="((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
                     class="border py-1 px-4 my-2 rounded-xl"
                     required
