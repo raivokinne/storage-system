@@ -51,3 +51,17 @@ function old($key): string
 {
     return $_POST[$key] ?? '';
 }
+
+function hash_make($password): string
+{
+	return password_hash($password, PASSWORD_DEFAULT);
+}
+
+function hash_check($one, $two): string
+{
+	if (password_verify($one, $two)) {
+		echo 'Password is valid!';
+	} else {
+		echo 'Invalid password.';
+	}
+}

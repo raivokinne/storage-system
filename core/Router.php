@@ -101,26 +101,29 @@ class Router
 		return new static;
 	}
 
-    /**
-     * Dispatch the router and call the corresponding controller.
-     *
-     * @param mixed $uri
-     * @param string $method
-     * @return mixed
-     * @throws Exception
-     */
+	/**
+		 * Dispatch the router and call the corresponding controller.
+		 *
+		 * @param mixed $uri
+		 * @param string $method
+		 * @return mixed
+		 * @throws Exception
+		 */
 	public static function route(mixed $uri, string $method): mixed
-    {
+	{
 		foreach (self::$routes as $route) {
 			if ($route['url'] === $uri && $route['method'] === strtoupper($method)) {
 				Middleware::resolve($route['middleware']);
 
-				return require base_path('app/Controllers/' . $route['controller']. '.php');
+				list($class, $method) = $route['controller'];
+				$instance = new $class();
+				$instance->$method();
+			} else {
+				self::abort(404, 'tu esi daunis');
 			}
 		}
 
-        self::abort(404, 'tu esi daunis');
-        return null;
+		return null;
 	}
 
 
@@ -144,6 +147,6 @@ class Router
 	public static function abort(int $code = 404, string $message = ''): void
 	{
 		http_response_code($code);
-        view('404', compact('message'));
+		view('404', compact('message'));
 	}
 }
