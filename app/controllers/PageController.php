@@ -4,9 +4,12 @@ namespace App\Controllers;
 
 use App\Models\User;
 
-$user = User::all();
-$id = 1;
-
-view('index', compact('id'));
-
+class PageController extends Controller {
+	/**
+	* @return void
+	*/
+	public function index() {
+		return view('index');
+	}
+}
 

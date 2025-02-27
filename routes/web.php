@@ -1,7 +1,12 @@
 <?php
 
-global $router;
+use App\Controllers\Auth\LoginController;
+use App\Controllers\Auth\RegisterController;
+use App\Controllers\PageController;
+use Core\Router;
 
-$router->get('/', 'PageController');
-
-$router->get('/about', 'PageController@about');
+Router::get('/', [PageController::class, 'index']);
+Router::get('/', [LoginController::class, 'create']);
+Router::post('/', [LoginController::class, 'store']);
+Router::get('/', [RegisterController::class, 'create']);
+Router::post('/', [RegisterController::class, 'store']);
