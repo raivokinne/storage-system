@@ -8,3 +8,5 @@ $user = User::all();
 $id = 1;
 
 view('index', compact('id'));
+
+

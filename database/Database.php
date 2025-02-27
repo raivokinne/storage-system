@@ -10,7 +10,7 @@ class Database
     /**
      * @param mixed $config
      */
-    public static function connect($config): PDO
+    public static function connect(mixed $config): PDO
     {
         if (!$config) {
             die('config not found');
