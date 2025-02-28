@@ -122,7 +122,6 @@ class Router
 				return $instance->$method($parameters);
 			}
 		}
-
 		$this->abort(404, "Page not found");
 		return null;
 	}

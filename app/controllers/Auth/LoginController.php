@@ -22,9 +22,6 @@ class LoginController extends Controller
         view('login', ['title' => 'Login']);
         return;
     }
-    /**
-     * @return void
-     */
     public function store(): void
     {
         if (isset($_SESSION['user'])) {
