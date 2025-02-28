@@ -2,7 +2,7 @@
 
 namespace Core;
 
-use Core\Validation\Validator;
+use Core\Validator;
 use JetBrains\PhpStorm\NoReturn;
 
 class Request

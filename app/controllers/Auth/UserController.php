@@ -53,12 +53,6 @@ class UserController extends Controller
             redirect('/register');
         }
 
-        if (User::where('name', '=', $name)->get()) {
-            Session::flash('errors', ['name' => 'User already exists']);
-            Session::put('old', compact('name', 'email'));
-            redirect('/register');
-        }
-
         if (User::where('email', '=', $email)->get()) {
             Session::flash('errors', ['email' => 'User already exists']);
             Session::put('old', compact('name', 'email'));
