@@ -100,11 +100,26 @@ class Router
 	public function route(mixed $uri, string $method): mixed
 	{
 		foreach ($this->routes as $route) {
-			if ($route['url'] === $uri && $route['method'] === strtoupper($method)) {
-				Middleware::resolve($route['middleware']);
+			if ($route['method'] !== strtoupper($method)) {
+				continue;
+			}
+
+			$pattern = str_replace('/', '\/', $route['url']);
+			$pattern = preg_replace('#:([a-zA-Z0-9_]+)#', '(?<$1>[^/]+)', $pattern);
+			$pattern = '#^' . $pattern . '$#';
+
+			if (preg_match($pattern, $uri, $matches)) {
+				$parameters = [];
+				foreach ($matches as $key => $value) {
+					if (!is_int($key)) {
+						$parameters[$key] = $value;
+					}
+				}
+
+				Middleware::resolve($route['middleware'] ?? null);
 				[$class, $method] = $route['controller'];
 				$instance = new $class();
-				return $instance->$method();
+				return $instance->$method($parameters);
 			}
 		}
 		$this->abort(404, "Page not found");
