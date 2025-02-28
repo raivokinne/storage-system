@@ -4,6 +4,7 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use App\Models\User;
+use Core\Request;
 use Core\Validator;
 use Core\Session;
 
@@ -18,7 +19,7 @@ class UserController extends Controller
         return view('register', ['title' => 'Register']);
     }
 
-    public function store()
+    public function store(Request $request)
     {
         if (isset($_SESSION['user'])) {
             redirect('/');
