@@ -4,6 +4,7 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use App\Models\User;
+use Core\Request;
 use Core\Validator;
 use Core\Session;
 use Core\Router;
@@ -20,30 +21,25 @@ class SessionController extends Controller
         return;
     }
 
-    public function store()
+    public function store(Request $request)
     {
         if (isset($_SESSION['user'])) {
             redirect(Router::previousUrl());
         }
 
-        $validator = Validator::make($_POST, [
-            'name' => 'required',
-            'password' => 'required',
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required'
         ]);
 
-        if ($validator->fails()) {
-            $this->incorrectPayload('login', $validator->errors());
-        }
+        $email = request('email');
+        $password = request('password');
 
-        $validated = $validator->validated();
-        $name = $validated['name'];
-        $password = $validated['password'];
-
-        $user = User::where('name', '=', $name)->get();
+        $user = User::where('email', '=', $email)->get();
 
         if (!$user || !password_verify($password, $user['password'])) {
             Session::flash('errors', ['password' => 'Invalid username or password']);
-            Session::put('old', ['name' => $name]);
+            Session::put('old', ['name' => $email]);
             redirect('/login');
         }
 

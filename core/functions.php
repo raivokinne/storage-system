@@ -1,5 +1,6 @@
 <?php
 
+use Core\Request;
 use Core\Session;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -75,5 +76,16 @@ function hash_check($one, $two): string
         echo 'Password is valid!';
     } else {
         echo 'Invalid password.';
+    }
+}
+
+function request(string $field)
+{
+    if($_POST[$field]) {
+        return $_POST[$field];
+    } else if($_GET[$field]) {
+        return $_GET[$field];
+    } else {
+        return $_FILES[$field];
     }
 }
