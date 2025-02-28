@@ -8,12 +8,9 @@ use Core\Validator;
 use Core\Session;
 use Core\Router;
 
-class LoginController extends Controller
+class SessionController extends Controller
 {
-    /**
-     * @return void
-     */
-    public function create(): void
+    public function create()
     {
         if (isset($_SESSION['user'])) {
             redirect(Router::previousUrl());
@@ -22,7 +19,8 @@ class LoginController extends Controller
         view('login', ['title' => 'Login']);
         return;
     }
-    public function store(): void
+
+    public function store()
     {
         if (isset($_SESSION['user'])) {
             redirect(Router::previousUrl());
@@ -54,5 +52,17 @@ class LoginController extends Controller
         $_SESSION['user'] = $user;
 
         redirect('/');
+    }
+
+    public function destroy()
+    {
+        if (!isset($_SESSION['user'])) {
+            header(Router::previousUrl());
+            die();
+        }
+
+        unset($_SESSION['user']);
+
+        header('Location: /');
     }
 }

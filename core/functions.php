@@ -3,7 +3,7 @@
 use Core\Session;
 use JetBrains\PhpStorm\NoReturn;
 
-function dd($value): void
+#[NoReturn] function dd($value): void
 {
     echo "<pre>";
     var_dump($value);
@@ -58,7 +58,7 @@ function error($key): string
     $errors = Session::get('errors');
     if ($errors) {
         if (array_key_exists($key, $errors)) {
-            return "<p class='text-red-500 font-light text-sm pb-1' >{$errors[$key]}</p>";
+            return "<p class='text-red-500 font-light text-sm pb-1' >{$errors[$key][0]}</p>";
         }
     }
     return '';

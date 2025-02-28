@@ -6,9 +6,8 @@ use App\Controllers\Controller;
 use App\Models\User;
 use Core\Validator;
 use Core\Session;
-use Core\Router;
 
-class RegisterController extends Controller
+class UserController extends Controller
 {
     public function create()
     {
@@ -67,10 +66,21 @@ class RegisterController extends Controller
 
         $password = password_hash($password, PASSWORD_BCRYPT);
 
-        $user = User::create(compact('name', 'email', 'password'))->get();
+        $result = User::create(compact('name', 'email', 'password'));
+        if (!$result) {
+            Session::flash('errors', ['form' => 'Failed to create user']);
+            Session::put('old', compact('name', 'email'));
+            redirect('/register');
+        }
+
+        $user = $result->get();
+        if (!is_array($user)) {
+            Session::flash('errors', ['form' => 'Failed to retrieve user data']);
+            Session::put('old', compact('name', 'email'));
+            redirect('/register');
+        }
 
         unset($user['password']);
-
         $_SESSION['user'] = $user;
 
         redirect('/');
