@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Validation;
+namespace Core;
 
 use Core\Container\App;
 use Core\Database\Database;

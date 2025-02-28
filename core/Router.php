@@ -118,8 +118,9 @@ class Router
 
 				Middleware::resolve($route['middleware'] ?? null);
 				[$class, $method] = $route['controller'];
+				$request = new Request($_POST + $_FILES + $_GET, $_SERVER);
 				$instance = new $class();
-				return $instance->$method($parameters);
+				return $instance->$method($request,$parameters);
 			}
 		}
 		$this->abort(404, "Page not found");
