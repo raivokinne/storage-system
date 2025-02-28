@@ -5,47 +5,52 @@ namespace App\Controllers\Auth;
 use App\Controllers\Controller;
 use App\Models\User;
 use Core\Validator;
-use Core\Authenticator;
+use Core\Session;
+use Core\Router;
 
 class LoginController extends Controller
 {
-	public function create()
-	{
-		return view('login/create');
-	}
+    public function create()
+    {
+        if (isset($_SESSION['user'])) {
+            redirect(Router::previousUrl());
+        }
 
-	public function store()
-	{
-		$validator = Validator::make($_POST, [
-			'email' => 'required|email',
-			'password' => 'required',
-		]);
+        view('login', ['title' => 'Login']);
+        return;
+    }
 
-		if ($validator->fails()) {
-			$this->incorrectPayload('login/create', $validator->errors());
-		}
+    public function store()
+    {
+        if (isset($_SESSION['user'])) {
+            redirect(Router::previousUrl());
+        }
 
-		$validated = $validator->validated();
+        $validator = Validator::make($_POST, [
+            'name' => 'required',
+            'password' => 'required',
+        ]);
 
-		$user = User::where('email', '=', $validated['email'])->get();
-		$errors = [];
+        if ($validator->fails()) {
+            $this->incorrectPayload('login', $validator->errors());
+        }
 
-		if (!$user) {
-			$errors['user'] = 'User does not exist';
-			if (count($errors) > 0) {
-				return view(
-					'login/create',
-					[
-						'title' => 'Login',
-						'errors' => $errors
-					]
-				);
-			}
-		} else {
-			(new Authenticator())->attempt($validated['email'], $validated['password']);
+        $validated = $validator->validated();
+        $name = $validated['name'];
+        $password = $validated['password'];
 
-			redirect('/');
-		}
-	}
+        $user = User::where('name', '=', $name)->get();
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            Session::flash('errors', ['password' => 'Invalid username or password']);
+            Session::put('old', ['name' => $name]);
+            redirect('/login');
+        }
+
+        unset($user['password']);
+
+        $_SESSION['user'] = $user;
+
+        redirect('/');
+    }
 }
-

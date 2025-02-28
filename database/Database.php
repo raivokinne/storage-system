@@ -7,8 +7,10 @@ use PDO;
 class Database
 {
     public static PDO $connection;
+
     /**
      * @param mixed $config
+     * @return PDO
      */
     public static function connect(mixed $config): PDO
     {

@@ -1,5 +1,6 @@
 <?php
 
+use Core\Session;
 use JetBrains\PhpStorm\NoReturn;
 
 #[NoReturn] function dd($value): void
@@ -49,19 +50,30 @@ function auth(): bool
 
 function old($key): string
 {
-    return $_POST[$key] ?? '';
+    return Session::get('old')[$key] ?? '';
+}
+
+function error($key): string
+{
+    $errors = Session::get('errors');
+    if ($errors) {
+        if (array_key_exists($key, $errors)) {
+            return "<p class='text-red-500 font-light text-sm pb-1' >{$errors[$key]}</p>";
+        }
+    }
+    return '';
 }
 
 function hash_make($password): string
 {
-	return password_hash($password, PASSWORD_DEFAULT);
+    return password_hash($password, PASSWORD_DEFAULT);
 }
 
 function hash_check($one, $two): string
 {
-	if (password_verify($one, $two)) {
-		echo 'Password is valid!';
-	} else {
-		echo 'Invalid password.';
-	}
+    if (password_verify($one, $two)) {
+        echo 'Password is valid!';
+    } else {
+        echo 'Invalid password.';
+    }
 }
