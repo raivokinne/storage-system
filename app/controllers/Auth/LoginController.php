@@ -10,7 +10,10 @@ use Core\Router;
 
 class LoginController extends Controller
 {
-    public function create()
+    /**
+     * @return void
+     */
+    public function create(): void
     {
         if (isset($_SESSION['user'])) {
             redirect(Router::previousUrl());
@@ -19,8 +22,10 @@ class LoginController extends Controller
         view('login', ['title' => 'Login']);
         return;
     }
-
-    public function store()
+    /**
+     * @return void
+     */
+    public function store(): void
     {
         if (isset($_SESSION['user'])) {
             redirect(Router::previousUrl());
