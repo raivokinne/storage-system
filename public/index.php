@@ -5,10 +5,11 @@ const BASE_PATH = __DIR__.'/../';
 session_start();
 require BASE_PATH . 'vendor/autoload.php';
 require BASE_PATH . 'core/functions.php';
-
 $dotenv = Dotenv\Dotenv::createImmutable(BASE_PATH, '.env');
+
 $dotenv->load();
 
+use Core\Session;
 use Database\Database;
 $config = require BASE_PATH . 'config/database.php';
 Database::connect($config);
@@ -27,3 +28,5 @@ try {
         return redirect($router->previousUrl());
     }
 }
+
+Session::unflash();
