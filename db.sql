@@ -3,7 +3,11 @@ USE storage;
 
 CREATE TABLE IF NOT EXISTS Users (
     ID INT NOT NULL AUTO_INCREMENT,
+<<<<<<< HEAD
     name VARCHAR(50) NOT NULL UNIQUE,
+=======
+    name VARCHAR(50) NOT NULL,
+>>>>>>> c39da82 (feat: fuck the database and models)
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     PRIMARY KEY (ID)

@@ -50,7 +50,6 @@ class Model extends Database
         self::$statement->execute();
         return new static;
     }
-
     /**
      * @param int $id
      * @return Model
@@ -80,7 +79,6 @@ class Model extends Database
         $query->execute($data);
         return new static;
     }
-
     /**
      * @param int $id
      * @param array<int,mixed> $data
@@ -110,7 +108,6 @@ class Model extends Database
         self::$statement->execute(['id' => $id]);
         return new static;
     }
-
     /**
      * @param string $key
      * @param string $operator
@@ -165,7 +162,6 @@ class Model extends Database
         self::$statement->execute();
         return new static;
     }
-
     /**
      * @param string $key
      * @param string $order

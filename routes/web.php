@@ -15,4 +15,4 @@ $router->post('/login', [LoginController::class, 'store']);
 $router->get('/register', [RegisterController::class, 'create']);
 $router->post('/register', [RegisterController::class, 'store']);
 
-$router->get('/logout', [LogoutController::class, 'destroy']);
+$router->get('/logout', [SessionController::class, 'destroy']);

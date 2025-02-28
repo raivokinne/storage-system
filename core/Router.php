@@ -103,7 +103,6 @@ class Router
 			if ($route['method'] !== strtoupper($method)) {
 				continue;
 			}
-
 			$pattern = str_replace('/', '\/', $route['url']);
 			$pattern = preg_replace('#:([a-zA-Z0-9_]+)#', '(?<$1>[^/]+)', $pattern);
 			$pattern = '#^' . $pattern . '$#';
