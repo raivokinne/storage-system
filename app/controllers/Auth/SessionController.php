@@ -8,7 +8,7 @@ use Core\Validator;
 use Core\Session;
 use Core\Router;
 
-class LoginController extends Controller
+class SessionController extends Controller
 {
     public function create()
     {
@@ -52,5 +52,17 @@ class LoginController extends Controller
         $_SESSION['user'] = $user;
 
         redirect('/');
+    }
+
+    public function destroy()
+    {
+        if (!isset($_SESSION['user'])) {
+            header(Router::previousUrl());
+            die();
+        }
+
+        unset($_SESSION['user']);
+
+        header('Location: /');
     }
 }

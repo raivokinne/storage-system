@@ -1,4 +1,5 @@
-<?php component('header'); ?>
+<?php $title = $title ?? null ?>
+<?php component('header', compact('title')); ?>
 <div class="container mx-auto w-full text-center pt-32">
     <form method="POST" action="/register" class="flex flex-col items-center">
         <div class="flex flex-col items-start">
