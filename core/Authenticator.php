@@ -11,15 +11,13 @@ class Authenticator
      * @param  mixed $email
      * @param  mixed $password
      */
-    public function attempt($email, $password): bool
+    public static function attempt(mixed $email, mixed $password): bool
     {
         $user = User::where('email', '=', $email)->get();
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
-                $this->login(
-                    $user
-                );
+                static::login($user);
 
                 return true;
             }
@@ -32,7 +30,7 @@ class Authenticator
      * @return void
      * @param  mixed $user
      */
-    public function login($user): void
+    public static function login(mixed $user): void
     {
         if ($user) {
             $_SESSION['user'] = $user;
@@ -44,8 +42,8 @@ class Authenticator
     /**
      * @return void
      */
-    public function logout(): void
+    public static function logout(): void
     {
-        Session::destroy();
+        Session::flush();
     }
 }

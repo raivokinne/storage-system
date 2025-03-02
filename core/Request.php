@@ -33,7 +33,7 @@ class Request
         foreach ($data as $key => $value) {
             $field = $key;
             try {
-                $field = trim($this->data[$field]);
+                $field = trim($this->data[$key]);
             } catch (\Exception $e) {
                 $field_value = null;
             }
@@ -56,7 +56,7 @@ class Request
                 }
 
                 if ($result) {
-                    $errors[$field] = "The {$field} {$result}";
+                    $errors[$key] = "{$result}";
                 }
             }
         }

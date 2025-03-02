@@ -131,7 +131,7 @@ class Router
 	 *
 	 * @return string
 	 */
-	public function previousUrl(): string
+	public static function previousUrl(): string
 	{
 		return $_SERVER['HTTP_REFERER'] ?? '';
 	}

@@ -9,12 +9,12 @@ class LogoutController
 {
     public function destroy()
     {
-        if (!isset($_SESSION['user'])) {
+        if (!isset($_SESSION['auth'])) {
             header(Router::previousUrl());
             die();
         }
 
-        unset($_SESSION['user']);
+        unset($_SESSION['auth']);
 
         header('Location: /');
     }

@@ -4,6 +4,8 @@ namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use App\Models\User;
+use Core\Authenticator;
+use Core\Middleware\Auth;
 use Core\Request;
 use Core\Validator;
 use Core\Session;
@@ -17,7 +19,7 @@ class SessionController extends Controller
             redirect(Router::previousUrl());
         }
 
-        view('login', ['title' => 'Login']);
+        view('auth/login', ['title' => 'Login']);
         return;
     }
 
@@ -34,18 +36,11 @@ class SessionController extends Controller
 
         $email = request('email');
         $password = request('password');
-
-        $user = User::where('email', '=', $email)->get();
-
-        if (!$user || !password_verify($password, $user['password'])) {
+        if (!Authenticator::attempt($email, $password)) {
             Session::flash('errors', ['password' => 'Invalid username or password']);
-            Session::put('old', ['name' => $email]);
+            Session::put('old', compact('email', 'password'));
             redirect('/login');
         }
-
-        unset($user['password']);
-
-        $_SESSION['user'] = $user;
 
         redirect('/');
     }
@@ -57,7 +52,7 @@ class SessionController extends Controller
             die();
         }
 
-        unset($_SESSION['user']);
+        Authenticator::logout();
 
         header('Location: /');
     }
