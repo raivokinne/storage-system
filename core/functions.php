@@ -111,12 +111,10 @@ function request(string $field)
  * @param string|null $method
  * @return void
  */
-#[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value, string $model = null, string $method = null): void
+#[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value, string $model, string $method): void
 {
     $backtrace = debug_backtrace();
-
-    // Caller
-    $info = $backtrace[1];
+    $info      = $backtrace[1];
 
     // Full controller path for the file that is calling
     $controllerFull = explode('\\', $info['class']);

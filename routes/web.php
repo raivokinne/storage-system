@@ -7,6 +7,7 @@ use App\Controllers\OrdersController;
 use App\Controllers\PageController;
 use App\Controllers\ProductsController;
 use App\Controllers\ShelvesController;
+use App\Controllers\TestController;
 
 global $router;
 
