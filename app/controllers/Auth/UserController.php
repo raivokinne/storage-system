@@ -13,14 +13,18 @@ class UserController extends Controller
 {
     public function show(): void
     {
-        if (!auth()) {redirect('/');}
+        if (!isset($_SESSION['user'])) {
+            redirect('/');
+        }
 
         view('auth/profile', ['title' => 'Profile']);
         return;
     }
     public function create(): void
     {
-        if (auth()) {redirect('/');}
+        if (isset($_SESSION['user'])) {
+            redirect('/');
+        }
 
         view('auth/register', ['title' => 'Register']);
         return;
