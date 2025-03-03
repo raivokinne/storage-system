@@ -3,21 +3,21 @@ namespace Core;
 
 class FileUpload
 {
-    public $file;
-    public $name;
-    public $size;
-    public $type;
-    public $tmp;
-    public $error;
-    public $extension;
+    private $file;
+    private $name;
+    private $size;
+    private $type;
+    private $tmp;
+    private $error;
+    private $extension;
 
-    public $uploadErrors = [];
+    private $uploadErrors = [];
 
-    public $randomFileName = false;
+    private $randomFileName = false;
 
-    public $newFileName = null;
+    private $newFileName = null;
 
-    public $path;
+    private $path;
 
     private $filesErrorMessages = [
         0 => "There is no error, the file uploaded with success",
@@ -30,35 +30,17 @@ class FileUpload
 
     public function __construct(string $file)
     {
-        $this->file      = request($file);
-        $this->name      = $this->file['name'];
-        $this->size      = $this->file['size'];
-        $this->type      = $this->file['type'];
-        $this->tmp       = $this->file['tmp_name'];
-        $this->error     = $this->file['error'];
-        $this->extension = $this->parseExtension();
-    }
-
-    /**
-     *    Get the file extension.
-     *    @return string
-     */
-    public function parseExtension(): ?string
-    {
-        $ext = null;
-
-        if (is_array($this->name)) {
-            foreach ($this->name as $value) {
-                $ext_values = explode('.', $value);
-                $ext_values = end($ext_values);
-                $ext[]      = '.' . $ext_values;
-            }
+        if (isset($_FILES[$file])) {
+            $this->file      = request($file);
+            $this->name      = $this->file['name'];
+            $this->size      = $this->file['size'];
+            $this->type      = $this->file['type'];
+            $this->tmp       = $this->file['tmp_name'];
+            $this->error     = $this->file['error'];
+            $this->extension = $this->parseExtension();
         } else {
-            $ext = explode('.', $this->name);
-            $ext = '.' . end($ext);
+            $this->error('Undefined input file name');
         }
-
-        return $ext;
     }
 
     /**
@@ -84,7 +66,7 @@ class FileUpload
      * @return void
      * @param mixed $fileError
      */
-    private function checkFilesErrors($fileError): void
+    private function checkFilesErrors($fileError)
     {
         if ($fileError > 0) {
             $this->uploadErrors[] = $this->filesErrorMessages[$fileError];
@@ -94,7 +76,7 @@ class FileUpload
      * @return void
      * @param mixed $errorMessage
      */
-    private function error($errorMessage): void
+    private function error($errorMessage)
     {
         $this->uploadErrors[] = $errorMessage;
     }
@@ -103,7 +85,7 @@ class FileUpload
      *    Move uploaded files.
      * @return void
      */
-    public function move(): void
+    public function move()
     {
         if (! is_dir(BASE_PATH . "/public/storage/" . $this->path)) {
             mkdir(BASE_PATH . "/public/storage/" . $this->path);
@@ -140,7 +122,10 @@ class FileUpload
 
             $this->checkFilesErrors($this->error);
 
-            move_uploaded_file($this->tmp, BASE_PATH . "/public/storage/" . $this->path . $name);
+            if (move_uploaded_file($this->tmp, $this->path . $name)) {
+            } else {
+                $this->error("Something went wrong. this file '{$name}' has not been uploaded");
+            }
         }
     }
 
