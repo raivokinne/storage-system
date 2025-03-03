@@ -22,6 +22,8 @@ $router->get('/profile', [UserController::class, 'show']);
 
 $router->get('/logout', [SessionController::class, 'destroy']);
 
+$router->post('/profile/image', [UserController::class, 'image']);
+
 $router->post('/upload', [TestController::class, 'test']);
 $router->get('/upload', [TestController::class, 'idk']);
 
