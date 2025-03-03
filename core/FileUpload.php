@@ -127,6 +127,17 @@ class FileUpload
         }
 
         $this->move();
+        if (isset($_FILES[$file])) {
+            $this->file      = request($file);
+            $this->name      = $this->file['name'];
+            $this->size      = $this->file['size'];
+            $this->type      = $this->file['type'];
+            $this->tmp       = $this->file['tmp_name'];
+            $this->error     = $this->file['error'];
+            $this->extension = $this->parseExtension();
+        } else {
+            $this->error('Undefined input file name');
+        }
     }
 
     /**
