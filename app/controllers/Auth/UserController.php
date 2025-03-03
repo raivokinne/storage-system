@@ -61,17 +61,25 @@ class UserController extends Controller
 //            'image' => 'required|image',
 //            'image_url' => 'required|url'
 //        ]);
-
+        // Upload the file to /users
         $file = new FileUpload('image');
         $file->path('/users/');
         $file->createRandomName();
         $file->upload();
 
+        // Get ready to save the new image to the DB
         $image = 'storage/users/' . $file->newFileName . $file->extension;
         $email = $_SESSION['user']['email'];
         $id = User::where('email', '=' , $email)->get()['ID'];
 
+        // Delete the old image URL
+        unlink($_SESSION['user']['image']);
+
+        // Save the new image URL to the DB
         User::update($id, compact('image'));
+
+        // Regenerate the session picture to display the new one
+        $_SESSION['user']['image'] = $image;
 
         redirect('/profile');
     }
