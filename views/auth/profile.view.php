@@ -15,9 +15,13 @@
                     <span class="ml-2 font-medium"><?= $_SESSION['user']['email'] ?? 'Not available' ?></span>
                 </div>
 
-                <div class="mt-4">
-                    <a href="#" class="border px-6 py-1.5 rounded-xl cursor-pointer inline-block">Edit Profile</a>
-                </div>
+                <form enctype="multipart/form-data" method="POST" action="/profile/image" class="flex flex-col">
+                    <input type="file" name="image" class="mb-2 cursor-pointer border px-4 py-2 rounded-lg">
+                    <?= error('image') ?>
+                    <input type="url" name="image_url" class="mt-2 mb-4 border px-4 py-2 rounded-lg" placeholder="Image URL">
+                    <?= error('image_url') ?>
+                    <button type="submit" class="bg-gradient-to-br font-semibold from-blue-400 to-purple-500 hover:from-purple-600 hover:to-blue-500 hover:scale-105 transition duration-200 text-white px-4 py-2 cursor-pointer rounded-lg">Update Image</button>
+                </form>
             </div>
         </div>
     </div>
