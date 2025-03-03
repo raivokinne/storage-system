@@ -85,7 +85,9 @@ function request(string $field)
         return $_POST[$field];
     } else if($_GET[$field]) {
         return $_GET[$field];
-    } else {
+    } else if($_FILES[$field]) {
         return $_FILES[$field];
-    }
+	} else {
+		return '';
+	}
 }
