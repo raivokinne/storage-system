@@ -39,7 +39,8 @@ function view($path, $attributes = []): void
     exit();
 }
 
-function component($component, $attributes = []): void {
+function component($component, $attributes = []): void
+{
     extract($attributes);
     require base_path('views/components/' . $component . '.php');
 }
@@ -81,13 +82,13 @@ function hash_check($one, $two): string
 
 function request(string $field)
 {
-    if($_POST[$field]) {
-        return $_POST[$field];
-    } else if($_GET[$field]) {
-        return $_GET[$field];
-    } else if($_FILES[$field]) {
+    if ($_FILES[$field]) {
         return $_FILES[$field];
-	} else {
-		return '';
-	}
+    } else if ($_POST[$field]) {
+        return $_POST[$field];
+    } else if ($_GET[$field]) {
+        return $_GET[$field];
+    } else {
+        return '';
+    }
 }
