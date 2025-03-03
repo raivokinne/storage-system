@@ -57,26 +57,29 @@ class UserController extends Controller
 
     public function image(Request $request): void
     {
-//        $request->validate([
-//            'image' => 'required|image',
-//            'image_url' => 'required|url'
-//        ]);
-        // Upload the file to /users
-        $file = new FileUpload('image');
-        $file->path('/users/');
-        $file->createRandomName();
-        $file->upload();
+        if (!auth()) {redirect('/');}
 
-        // Get ready to save the new image to the DB
-        $image = 'storage/users/' . $file->newFileName . $file->extension;
-        $email = $_SESSION['user']['email'];
-        $id = User::where('email', '=' , $email)->get()['ID'];
+        if (request('image')['size'] !== 0) {
+            $file = new FileUpload('image');
+            $file->path('/users/');
+            $file->createRandomName();
+            $file->upload();
 
-        // Delete the old image URL
-        unlink($_SESSION['user']['image']);
+            // Get ready to save the new image to the DB
+            $image = 'storage/users/' . $file->newFileName . $file->extension;
+            $email = $_SESSION['user']['email'];
+            $id = User::where('email', '=' , $email)->get()['ID'];
 
-        // Save the new image URL to the DB
-        User::update($id, compact('image'));
+            // Delete the old image URL
+            unlink($_SESSION['user']['image']);
+
+            // Save the new image URL to the DB
+            User::update($id, compact('image'));
+        } else if (request('image_url')) {
+            $image = request('image_url');
+        } else {
+            redirect('/profile');
+        }
 
         // Regenerate the session picture to display the new one
         $_SESSION['user']['image'] = $image;

@@ -32,7 +32,7 @@ class Validator
         }
         return "Must be a valid email address.";
     }
-    public static function required($value): bool|string
+    public static function required($value): bool|string|array
     {
         if (!empty($value)) {
             return false;
@@ -155,15 +155,20 @@ class Validator
         return "Must not be today.";
     }
 
-    public static function image($value): bool|string
+    public static function image($value): bool|string|array
     {
-        if (filter_var($value, FILTER_VALIDATE_URL)) {
-            return false;
+        try {
+            $type = explode('/', $value['type'])[0];
+            if ($type == 'image') {
+                return false;
+            }
+            return "Must be a valid Image.";
+        } catch (\Exception $e) {
+            return "Must be a valid Image.";
         }
-        return "Must be a valid URL.";
     }
 
-    public static function url($value): bool|string
+    public static function url($value): bool|string|array
     {
         if (filter_var($value, FILTER_VALIDATE_URL)) {
             return false;
