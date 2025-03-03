@@ -30,17 +30,103 @@ class FileUpload
 
     public function __construct(string $file)
     {
-        if (isset($_FILES[$file])) {
-            $this->file      = request($file);
-            $this->name      = $this->file['name'];
-            $this->size      = $this->file['size'];
-            $this->type      = $this->file['type'];
-            $this->tmp       = $this->file['tmp_name'];
-            $this->error     = $this->file['error'];
-            $this->extension = $this->parseExtension();
+        $this->file      = request($file);
+        $this->name      = $this->file['name'];
+        $this->size      = $this->file['size'];
+        $this->type      = $this->file['type'];
+        $this->tmp       = $this->file['tmp_name'];
+        $this->error     = $this->file['error'];
+        $this->extension = $this->parseExtension();
+    }
+
+    /**
+     *    Get the file extension.
+     *    @return string
+     */
+    public function parseExtension()
+    {
+        $ext = null;
+
+        if (is_array($this->name)) {
+            foreach ($this->name as $value) {
+                $ext_values = explode('.', $value);
+                $ext_values = end($ext_values);
+                $ext[]      = '.' . $ext_values;
+            }
         } else {
-            $this->error('Undefined input file name');
+            $ext = explode('.', $this->name);
+            $ext = '.' . end($ext);
         }
+
+        return $ext;
+    }
+
+    /**
+     *    Check if the file input empty ro not.
+     *    @return boolean
+     */
+    public function fileExists()
+    {
+        $file = null;
+        $name = $this->name;
+
+        if (is_array($name)) {
+            $name = implode('', $name);
+        }
+
+        if (! empty($name)) {
+            $file = $name;
+        }
+
+        return isset($this->file) && ! empty($file) && ! is_null($file);
+    }
+
+    /**
+     *    Create random name for the new file.
+     *    @return void
+     */
+    public function createRandomName()
+    {
+        $this->randomFileName = true;
+    }
+
+    /**
+     *    Create new file name.
+     *    @return void
+     */
+    public function createFileName(string $filename)
+    {
+        $this->newFileName = $filename;
+    }
+
+    /**
+     *    Set the destination path.
+     *    @param string, $path
+     */
+    public function path(string $path)
+    {
+        $path = trim($path, '/');
+        $path = trim($path, '\\');
+        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+        $path = $path . '' . DIRECTORY_SEPARATOR;
+
+        $this->path = $path;
+    }
+
+    /**
+     *    Upload the files to the specified destination.
+     */
+    public function upload()
+    {
+        if (! $this->fileExists()) {
+            $this->error('Choose files to upload.');
+        }
+
+        if (empty($this->path) || $this->path == null) {
+            $this->error('You have to use path method to specify the destination.');
+        }
+
+        $this->move();
     }
 
     /**
@@ -122,10 +208,7 @@ class FileUpload
 
             $this->checkFilesErrors($this->error);
 
-            if (move_uploaded_file($this->tmp, $this->path . $name)) {
-            } else {
-                $this->error("Something went wrong. this file '{$name}' has not been uploaded");
-            }
+            move_uploaded_file($this->tmp, BASE_PATH . "/public/storage/" . $this->path . $name);
         }
     }
 
