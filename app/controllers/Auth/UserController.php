@@ -43,13 +43,22 @@ class UserController extends Controller
         $name = request('name');
         $email = request('email');
         $password = hash_make(request('password'));
+        $image = 'images/user.png';
 
-        User::create(compact('name', 'email', 'password'));
+        User::create(compact('name', 'email', 'password', 'image'));
 
         $user = User::where('email', '=', $email)->get();
 
         Authenticator::login($user);
 
         redirect('/');
+    }
+
+    public function image(Request $request): void
+    {
+        $request->validate([
+            'image' => 'required|image',
+            'image_url' => 'required|url'
+        ]);
     }
 }

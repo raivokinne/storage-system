@@ -73,9 +73,9 @@ function hash_make($password): string
 function hash_check($one, $two): string
 {
     if (password_verify($one, $two)) {
-        echo 'Password is valid!';
+        return 'Invalid password.';
     } else {
-        echo 'Invalid password.';
+        return 'Invalid password.';
     }
 }
 

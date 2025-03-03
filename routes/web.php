@@ -3,7 +3,6 @@
 use App\Controllers\Auth\SessionController;
 use App\Controllers\Auth\UserController;
 use App\Controllers\PageController;
-use App\Controllers\TestController;
 
 global $router;
 
@@ -18,5 +17,4 @@ $router->get('/profile', [UserController::class, 'show']);
 
 $router->get('/logout', [SessionController::class, 'destroy']);
 
-$router->get('/test', [TestController::class, 'index']);
-$router->post('/test', [TestController::class, 'store']);
+$router->post('/profile/image', [UserController::class, 'image']);

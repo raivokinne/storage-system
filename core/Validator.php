@@ -155,4 +155,20 @@ class Validator
         return "Must not be today.";
     }
 
+    public static function image($value): bool|string
+    {
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+        return "Must be a valid URL.";
+    }
+
+    public static function url($value): bool|string
+    {
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            return false;
+        }
+        return "Must be a valid URL.";
+    }
+
 }
