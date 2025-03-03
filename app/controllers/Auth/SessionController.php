@@ -1,15 +1,11 @@
 <?php
-
 namespace App\Controllers\Auth;
 
 use App\Controllers\Controller;
 use App\Models\User;
-use Core\Authenticator;
-use Core\Middleware\Auth;
 use Core\Request;
-use Core\Validator;
-use Core\Session;
 use Core\Router;
+use Core\Session;
 
 class SessionController extends Controller
 {
@@ -30,29 +26,36 @@ class SessionController extends Controller
         }
 
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'email'    => 'required|email',
+            'password' => 'required',
         ]);
 
-        $email = request('email');
+        $email    = request('email');
         $password = request('password');
-        if (!Authenticator::attempt($email, $password)) {
+
+        $user = User::where('email', '=', $email)->get();
+
+        if (! $user || ! password_verify($password, $user['password'])) {
             Session::flash('errors', ['password' => 'Invalid username or password']);
-            Session::put('old', compact('email', 'password'));
+            Session::put('old', ['email' => $email]);
             redirect('/login');
         }
+
+        unset($user['password']);
+
+        $_SESSION['user'] = $user;
 
         redirect('/');
     }
 
     public function destroy()
     {
-        if (!isset($_SESSION['user'])) {
+        if (! isset($_SESSION['user'])) {
             header(Router::previousUrl());
             die();
         }
 
-        Authenticator::logout();
+        unset($_SESSION['user']);
 
         header('Location: /');
     }
