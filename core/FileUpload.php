@@ -3,21 +3,21 @@ namespace Core;
 
 class FileUpload
 {
-    public $file;
-    public $name;
-    public $size;
-    public $type;
-    public $tmp;
-    public $error;
-    public $extension;
+    private $file;
+    private $name;
+    private $size;
+    private $type;
+    private $tmp;
+    private $error;
+    private $extension;
 
-    public $uploadErrors = [];
+    private $uploadErrors = [];
 
-    public $randomFileName = false;
+    private $randomFileName = false;
 
-    public $newFileName = null;
+    private $newFileName = null;
 
-    public $path;
+    private $path;
 
     private $filesErrorMessages = [
         0 => "There is no error, the file uploaded with success",
