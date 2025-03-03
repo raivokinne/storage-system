@@ -5,6 +5,7 @@ namespace App\Controllers\Auth;
 use App\Controllers\Controller;
 use App\Models\User;
 use Core\Authenticator;
+use Core\FileUpload;
 use Core\Request;
 use Core\Validator;
 use Core\Session;
@@ -56,9 +57,22 @@ class UserController extends Controller
 
     public function image(Request $request): void
     {
-        $request->validate([
-            'image' => 'required|image',
-            'image_url' => 'required|url'
-        ]);
+//        $request->validate([
+//            'image' => 'required|image',
+//            'image_url' => 'required|url'
+//        ]);
+
+        $file = new FileUpload('image');
+        $file->path('/users/');
+        $file->createRandomName();
+        $file->upload();
+
+        $image = 'storage/users/' . $file->newFileName . $file->extension;
+        $email = $_SESSION['user']['email'];
+        $id = User::where('email', '=' , $email)->get()['ID'];
+
+        User::update($id, compact('image'));
+
+        redirect('/profile');
     }
 }

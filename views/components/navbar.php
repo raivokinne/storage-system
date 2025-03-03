@@ -44,7 +44,7 @@
                 </li>
             </ul>
             <?php else: ?>
-            <img src="<?= $_SESSION['user']['image'] ?>" alt="Profile" class="w-10 h-10 rounded-full mt-2.5 mr-3 border">
+            <img src="<?= $_SESSION['user']['image'] ?>" alt="Profile" class="w-10 h-10 rounded-full mt-2.5 mr-3 border border-white">
             <ul class="flex space-x-4 pt-3">
                 <li>
                     <a href="/logout" class="inline-flex bg-gradient-to-br from-blue-400 to-purple-500 rounded-l-3xl px-8 items-center py-2 text-sm font-bold text-gray-100 hover:to-blue-500 hover:from-purple-600 transition hover:scale-105 duration-400">
