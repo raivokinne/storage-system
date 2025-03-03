@@ -9,7 +9,7 @@ class Guest
      */
     public function handle(): void
     {
-        if ($_SESSION['user'] ?? false) {
+        if ($_SESSION['auth'] ?? false) {
             header('Location: /');
             die();
         }

@@ -59,7 +59,7 @@ function error($key): string
     $errors = Session::get('errors');
     if ($errors) {
         if (array_key_exists($key, $errors)) {
-            return "<p class='text-red-500 font-light text-sm pb-1' >{$errors[$key][0]}</p>";
+            return "<p class='text-red-500 font-light text-sm pb-1' >{$errors[$key]}</p>";
         }
     }
     return '';

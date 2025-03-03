@@ -9,7 +9,7 @@ class Auth
      */
     public function handle(): void
     {
-        if (!isset($_SESSION['user'])) {
+        if (!isset($_SESSION['auth'])) {
             header('Location: /login');
             die();
         }

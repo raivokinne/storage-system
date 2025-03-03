@@ -13,5 +13,6 @@ $router->post('/login', [SessionController::class, 'store']);
 
 $router->get('/register', [UserController::class, 'create']);
 $router->post('/register', [UserController::class, 'store']);
+$router->get('/profile', [UserController::class, 'show']);
 
 $router->get('/logout', [SessionController::class, 'destroy']);
