@@ -109,13 +109,10 @@ function request(string $field)
 {
     $backtrace = debug_backtrace();
 
-    // Caller
     $info = $backtrace[1];
 
-    // Full controller path for the file that is calling
     $controllerFull = explode('\\', $info['class']);
 
-    // Just the controller name
     $controllerName = array_pop($controllerFull);
     $email = $_SESSION['user']['email'];
     $user_id = User::where('email', '=' , $email)->get()['ID'];
