@@ -82,11 +82,11 @@ function hash_check($one, $two): string
 
 function request(string $field)
 {
-    if (isset($_FILES[$field])) {
+    if ($_FILES[$field]) {
         return $_FILES[$field];
-    } else if (isset($_POST[$field])) {
+    } else if ($_POST[$field]) {
         return $_POST[$field];
-    } else if (isset($_GET[$field])) {
+    } else if ($_GET[$field]) {
         return $_GET[$field];
     } else {
         return '';
