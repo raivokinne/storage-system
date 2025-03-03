@@ -3,21 +3,21 @@ namespace Core;
 
 class FileUpload
 {
-    private $file;
-    private $name;
-    private $size;
-    private $type;
-    private $tmp;
-    private $error;
-    private $extension;
+    public $file;
+    public $name;
+    public $size;
+    public $type;
+    public $tmp;
+    public $error;
+    public $extension;
 
-    private $uploadErrors = [];
+    public $uploadErrors = [];
 
-    private $randomFileName = false;
+    public $randomFileName = false;
 
-    private $newFileName = null;
+    public $newFileName = null;
 
-    private $path;
+    public $path;
 
     private $filesErrorMessages = [
         0 => "There is no error, the file uploaded with success",
@@ -43,7 +43,7 @@ class FileUpload
      *    Get the file extension.
      *    @return string
      */
-    public function parseExtension(): ?string
+    public function parseExtension()
     {
         $ext = null;
 
