@@ -4,8 +4,12 @@ namespace App\Controllers;
 
 class TestController extends Controller
 {
-	public function test($id)
+	public function index()
 	{
-		dd($id);
+		view('test');
 	}
+    public function store()
+    {
+        dd(request('image'));
+    }
 }

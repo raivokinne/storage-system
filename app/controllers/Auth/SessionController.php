@@ -34,7 +34,7 @@ class SessionController extends Controller
             'password' => 'required'
         ]);
 
-        $email = request('email');
+        $email = request('name');
         $password = request('password');
         if (!Authenticator::attempt($email, $password)) {
             Session::flash('errors', ['password' => 'Invalid username or password']);
