@@ -5,9 +5,9 @@ use App\Controllers\Auth\SessionController;
 use App\Controllers\Auth\UserController;
 use App\Controllers\OrdersController;
 use App\Controllers\PageController;
-use App\Controllers\TestController;
-use App\Controllers\ShelvesController;
 use App\Controllers\ProductsController;
+use App\Controllers\ShelvesController;
+use App\Controllers\TestController;
 
 global $router;
 
@@ -52,4 +52,3 @@ $router->get('/shelves/:id/destroy', [ShelvesController::class, 'destroy']);
 $router->get('/actions', [ActionsController::class, 'index']);
 
 $router->post('/profile/image', [UserController::class, 'image']);
-
