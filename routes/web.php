@@ -28,3 +28,4 @@ $router->get('/orders', [OrdersController::class, 'index']);
 $router->get('/shelves', [ShelvesController::class, 'index']);
 $router->get('/products', [ProductsController::class, 'index']);
 $router->get('/actions', [ActionsController::class, 'index']);
+
