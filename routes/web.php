@@ -24,9 +24,6 @@ $router->get('/logout', [SessionController::class, 'destroy']);
 
 $router->post('/profile/image', [UserController::class, 'image']);
 
-$router->post('/upload', [TestController::class, 'test']);
-$router->get('/upload', [TestController::class, 'idk']);
-
 $router->get('/orders', [OrdersController::class, 'index']);
 $router->get('/shelves', [ShelvesController::class, 'index']);
 $router->get('/products', [ProductsController::class, 'index']);
