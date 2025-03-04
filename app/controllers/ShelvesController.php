@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 class ShelvesController {
-    public function index() {
-        require BASE_PATH . 'views/shelves/index.view.php';
+    public function index(): void {
+        view("shelves/index");
     }
 }
