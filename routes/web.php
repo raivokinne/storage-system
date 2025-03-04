@@ -3,11 +3,6 @@
 use App\Controllers\Auth\SessionController;
 use App\Controllers\Auth\UserController;
 use App\Controllers\PageController;
-use App\Controllers\TestController;
-use App\Controllers\OrdersController;
-use App\Controllers\ShelvesController;
-use App\Controllers\ProductsController;
-use App\Controllers\ActionsController;
 
 global $router;
 
@@ -28,4 +23,3 @@ $router->get('/orders', [OrdersController::class, 'index']);
 $router->get('/shelves', [ShelvesController::class, 'index']);
 $router->get('/products', [ProductsController::class, 'index']);
 $router->get('/actions', [ActionsController::class, 'index']);
-
