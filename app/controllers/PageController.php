@@ -8,8 +8,8 @@ class PageController extends Controller {
 	/**
 	* @return void
 	*/
-	public function index() {
-		return view('index');
+	public function index(): void {
+		view('index');
 	}
 }
 
