@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS Users (
     name VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    image VARCHAR(255),
     PRIMARY KEY (ID)
 );
 
@@ -50,7 +51,7 @@ CREATE TABLE IF NOT EXISTS ProductCategories (
 CREATE TABLE IF NOT EXISTS Actions (
     ID INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
-    action ENUM('view', 'like', 'comment', 'share') NOT NULL,
+    action ENUM('delete', 'create', 'edit', 'other') NOT NULL,
     model VARCHAR(50) NOT NULL,
     old_value VARCHAR(255),
     new_value VARCHAR(255),

@@ -4,20 +4,20 @@ namespace Core;
 class FileUpload
 {
     private $file;
-    private $name;
+    public $name;
     private $size;
     private $type;
     private $tmp;
     private $error;
-    private $extension;
+    public $extension;
 
     private $uploadErrors = [];
 
     private $randomFileName = false;
 
-    private $newFileName = null;
+    public $newFileName = null;
 
-    private $path;
+    public $path;
 
     private $filesErrorMessages = [
         0 => "There is no error, the file uploaded with success",
