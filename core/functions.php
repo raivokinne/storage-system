@@ -96,11 +96,13 @@ function request(string $field)
 }
 
 /**
- * Does the same shit as the php redirect() function but automatically saves the completed action to Actions.
+ * Does the same shit as the php redirect() function but automatically saves the completed action to Actions table.
  *
  * @param string $path
- * @param string $model
- * @param string $method
+ * @param mixed $old_value
+ * @param mixed $new_value
+ * @param string|null $model
+ * @param string|null $method
  * @return void
  */
 #[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value , string $model = null, string $method = null): void
