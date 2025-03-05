@@ -1,8 +1,11 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\Actions;
+
 class ActionsController {
     public function index() {
-        require BASE_PATH . 'views/actions/index.view.php';
+        $actions = Actions::all()->getAll();
+        return view('actions/index', ['actions' => $actions]);
     }
 }
