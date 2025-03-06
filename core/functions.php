@@ -2,6 +2,7 @@
 
 use App\Models\Action;
 use App\Models\User;
+use Core\Request;
 use Core\Session;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -110,13 +111,17 @@ function request(string $field)
  * @param string|null $method
  * @return void
  */
-#[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value, string $model, string $method): void
+#[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value, string $model = null, string $method = null): void
 {
     $backtrace = debug_backtrace();
-    $info      = $backtrace[1];
 
+    // Caller
+    $info = $backtrace[1];
+
+    // Full controller path for the file that is calling
     $controllerFull = explode('\\', $info['class']);
 
+    // Just the controller name
     $controllerName = array_pop($controllerFull);
     $email          = $_SESSION['user']['email'];
     $user_id        = User::where('email', '=', $email)->get()['ID'];
