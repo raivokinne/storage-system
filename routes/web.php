@@ -1,13 +1,13 @@
 <?php
 
+use App\Controllers\ActionsController;
 use App\Controllers\Auth\SessionController;
 use App\Controllers\Auth\UserController;
-use App\Controllers\PageController;
-use App\Controllers\TestController;
 use App\Controllers\OrdersController;
-use App\Controllers\ShelvesController;
+use App\Controllers\PageController;
 use App\Controllers\ProductsController;
-use App\Controllers\ActionsController;
+use App\Controllers\ShelvesController;
+use App\Controllers\PageController;
 
 global $router;
 
