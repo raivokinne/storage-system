@@ -108,7 +108,6 @@ function request(string $field)
 #[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value , string $model = null, string $method = null): void
 {
     $backtrace = debug_backtrace();
-
     $info = $backtrace[1];
 
     $controllerFull = explode('\\', $info['class']);
