@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS ProductCategories (
 CREATE TABLE IF NOT EXISTS Actions (
     ID INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
-    action ENUM('delete', 'create', 'edit', 'other') NOT NULL,
+    action ENUM('destroy', 'store', 'update', 'other') NOT NULL,
     model VARCHAR(50) NOT NULL,
     old_value VARCHAR(255),
     new_value VARCHAR(255),
