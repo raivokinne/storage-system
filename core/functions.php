@@ -108,14 +108,10 @@ function request(string $field)
 #[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value , string $model = null, string $method = null): void
 {
     $backtrace = debug_backtrace();
-
-    // Caller
     $info = $backtrace[1];
 
-    // Full controller path for the file that is calling
     $controllerFull = explode('\\', $info['class']);
 
-    // Just the controller name
     $controllerName = array_pop($controllerFull);
     $email = $_SESSION['user']['email'];
     $user_id = User::where('email', '=' , $email)->get()['ID'];
