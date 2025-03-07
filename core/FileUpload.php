@@ -199,6 +199,74 @@ class FileUpload
     }
 
     /**
+     *    Check if the file input empty ro not.
+     *    @return boolean
+     */
+    public function fileExists()
+    {
+        $file = null;
+        $name = $this->name;
+
+        if (is_array($name)) {
+            $name = implode('', $name);
+        }
+
+        if (! empty($name)) {
+            $file = $name;
+        }
+
+        return isset($this->file) && ! empty($file) && ! is_null($file);
+    }
+
+    /**
+     *    Create random name for the new file.
+     *    @return void
+     */
+    public function createRandomName()
+    {
+        $this->randomFileName = true;
+    }
+
+    /**
+     *    Create new file name.
+     *    @return void
+     */
+    public function createFileName(string $filename)
+    {
+        $this->newFileName = $filename;
+    }
+
+    /**
+     *    Set the destination path.
+     *    @param string, $path
+     */
+    public function path(string $path)
+    {
+        $path = trim($path, '/');
+        $path = trim($path, '\\');
+        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
+        $path = $path . '' . DIRECTORY_SEPARATOR;
+
+        $this->path = $path;
+    }
+
+    /**
+     *    Upload the files to the specified destination.
+     */
+    public function upload()
+    {
+        if (! $this->fileExists()) {
+            $this->error('Choose files to upload.');
+        }
+
+        if (empty($this->path) || $this->path == null) {
+            $this->error('You have to use path method to specify the destination.');
+        }
+
+        $this->move();
+    }
+
+    /**
      *    Generate random string.
      *
      *    @param integer $length
