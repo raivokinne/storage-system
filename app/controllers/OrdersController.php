@@ -31,7 +31,7 @@ class OrdersController extends Controller {
 
             $data = [
                 'user_id' => $user_id, // Correctly assign the ID
-                'status' => $_POST['status'] ?? 'pending',
+                'status' => $_POST['status'] ?? 'pending',  
                 'product_id' => $_POST['product_id'] ?? null,
                 'quantity' => $_POST['quantity'] ?? 1,
             ];
