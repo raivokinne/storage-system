@@ -84,11 +84,11 @@ function hash_check($one, $two): string
 
 function request(string $field)
 {
-    if (isset($_FILES[$field])) {
+    if ($_FILES[$field]) {
         return $_FILES[$field];
-    } else if (isset($_POST[$field])) {
+    } else if ($_POST[$field]) {
         return $_POST[$field];
-    } else if (isset($_GET[$field])) {
+    } else if ($_GET[$field]) {
         return $_GET[$field];
     } else {
         return '';
@@ -108,14 +108,10 @@ function request(string $field)
 #[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value , string $model = null, string $method = null): void
 {
     $backtrace = debug_backtrace();
-
-    // Caller
     $info = $backtrace[1];
 
-    // Full controller path for the file that is calling
     $controllerFull = explode('\\', $info['class']);
 
-    // Just the controller name
     $controllerName = array_pop($controllerFull);
     $email = $_SESSION['user']['email'];
     $user_id = User::where('email', '=' , $email)->get()['ID'];
