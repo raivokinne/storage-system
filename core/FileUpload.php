@@ -129,6 +129,7 @@ class FileUpload
         $this->move();
     }
 
+
     /**
      *    Check if the file input empty ro not.
      *    @return boolean
