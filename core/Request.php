@@ -31,15 +31,16 @@ class Request
         Validator::set_data($this->data);
         $errors = [];
         foreach ($data as $key => $value) {
-            $field = $key;
             try {
-                $field = trim($this->data[$key]);
+                $field = isset($this->data[$key]) ? $this->data[$key] : null;
+                if (is_string($field)) {
+                    $field = trim($field);
+                }
             } catch (\Exception $e) {
-                $field_value = null;
+                $field = null;
             }
 
             is_array($value) ?: $value = explode('|', $value);
-
             $rules = $value;
 
             foreach ($rules as $rule) {

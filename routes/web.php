@@ -1,13 +1,13 @@
 <?php
 
+use App\Controllers\ActionsController;
 use App\Controllers\Auth\SessionController;
 use App\Controllers\Auth\UserController;
+use App\Controllers\OrdersController;
 use App\Controllers\PageController;
 use App\Controllers\TestController;
-use App\Controllers\OrdersController;
 use App\Controllers\ShelvesController;
 use App\Controllers\ProductsController;
-use App\Controllers\ActionsController;
 
 global $router;
 
@@ -52,3 +52,6 @@ $router->post('/shelves/update', [ShelvesController::class, 'update']);
 $router->get('/shelves/destroy', [ShelvesController::class, 'destroy']);
 
 $router->get('/actions', [ActionsController::class, 'index']);
+
+$router->post('/profile/image', [UserController::class, 'image']);
+

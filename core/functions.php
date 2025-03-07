@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Action;
+use App\Models\User;
 use Core\Request;
 use Core\Session;
 use JetBrains\PhpStorm\NoReturn;
@@ -74,9 +76,9 @@ function hash_make($password): string
 function hash_check($one, $two): string
 {
     if (password_verify($one, $two)) {
-        echo 'Password is valid!';
+        return 'Invalid password.';
     } else {
-        echo 'Invalid password.';
+        return 'Invalid password.';
     }
 }
 
@@ -91,4 +93,33 @@ function request(string $field)
     } else {
         return '';
     }
+}
+
+/**
+ * Does the same shit as the php redirect() function but automatically saves the completed action to Actions table.
+ *
+ * @param string $path
+ * @param mixed $old_value
+ * @param mixed $new_value
+ * @param string|null $model
+ * @param string|null $method
+ * @return void
+ */
+#[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value , string $model = null, string $method = null): void
+{
+    $backtrace = debug_backtrace();
+    $info = $backtrace[1];
+
+    $controllerFull = explode('\\', $info['class']);
+
+    $controllerName = array_pop($controllerFull);
+    $email = $_SESSION['user']['email'];
+    $user_id = User::where('email', '=' , $email)->get()['ID'];
+    $method = $method ?? $info['function'];
+    $action = in_array($method, ['destroy', 'store', 'update']) ? $method : 'other';
+    $model = $model ?? str_replace('Controller', '', $controllerName);
+
+    Action::create(compact('user_id', 'action', 'model', 'model', 'old_value', 'new_value'));
+
+    redirect($path);
 }
