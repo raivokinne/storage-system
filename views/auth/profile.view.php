@@ -7,12 +7,12 @@
             <div class="flex flex-col items-start border p-6 rounded-xl">
                 <div class="mb-4">
                     <span class="font-light">Name:</span>
-                    <span class="ml-2 font-medium"><?= $_SESSION['user']['name'] ?? 'Not available' ?></span>
+                    <span class="ml-2 font-medium"><?= session('user','name') ?? 'Not available' ?></span>
                 </div>
 
                 <div class="mb-4">
                     <span class="font-light">Email:</span>
-                    <span class="ml-2 font-medium"><?= $_SESSION['user']['email'] ?? 'Not available' ?></span>
+                    <span class="ml-2 font-medium"><?= session('user', 'email') ?? 'Not available' ?></span>
                 </div>
 
                 <form enctype="multipart/form-data" method="POST" action="/profile/image" class="flex flex-col">
