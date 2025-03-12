@@ -43,7 +43,7 @@ class FileUpload
      *    Get the file extension.
      *    @return string
      */
-    public function parseExtension()
+    public function parseExtension(): ?string
     {
         $ext = null;
 
@@ -152,7 +152,7 @@ class FileUpload
      * @return void
      * @param mixed $fileError
      */
-    private function checkFilesErrors($fileError)
+    private function checkFilesErrors($fileError): void
     {
         if ($fileError > 0) {
             $this->uploadErrors[] = $this->filesErrorMessages[$fileError];
@@ -162,7 +162,7 @@ class FileUpload
      * @return void
      * @param mixed $errorMessage
      */
-    private function error($errorMessage)
+    private function error($errorMessage): void
     {
         $this->uploadErrors[] = $errorMessage;
     }
@@ -171,7 +171,7 @@ class FileUpload
      *    Move uploaded files.
      * @return void
      */
-    public function move()
+    public function move(): void
     {
         if (! is_dir(BASE_PATH . "/public/storage/" . $this->path)) {
             mkdir(BASE_PATH . "/public/storage/" . $this->path);
