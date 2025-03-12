@@ -43,7 +43,7 @@ class FileUpload
      *    Get the file extension.
      *    @return string
      */
-    public function parseExtension()
+    public function parseExtension(): ?string
     {
         $ext = null;
 
