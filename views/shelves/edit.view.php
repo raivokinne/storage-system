@@ -2,17 +2,18 @@
 <?php component('header', compact('title')); ?>
 <div class="w-full min-h-screen bg-gray-100 p-6">
     <h1 class="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-900 text-transparent bg-clip-text mb-4">Edit Shelf #<?php echo $shelf['ID'] ?></h1>
-    <form method="POST" action="/shelves/<?php echo $shelf['ID'] ?>/update" class="w-1/2 mx-auto">
+    <form method="POST" action="/shelves/update" class="w-1/2 mx-auto">
+        <input type="hidden" name="id" value="<?php echo $shelf['ID'] ?>">
         <div>
             <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Shelf Name:</label>
-            <input type="text" name="name" id="name" value="<?php echo htmlspecialchars($shelf['name']) ?>" class="w-full border py-1 px-4 my-2 rounded-xl" required>
+            <input type="text" name="name" id="name" value="<?php echo $shelf['name'] ?>" class="w-full border py-1 px-4 my-2 rounded-xl" required>
         </div>
         <div class="mt-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Products on Shelf:</label>
             <select name="products[]" multiple class="w-full border py-1 px-4 my-2 rounded-xl h-40" size="5">
                 <?php foreach ($allProducts as $product): ?>
                     <option value="<?php echo $product['ID'] ?>"<?php echo in_array($product['ID'], $currentProducts) ? 'selected' : '' ?>>
-                        <?php echo htmlspecialchars($product['name']) ?>
+                        <?php echo $product['name'] ?>
                     </option>
                 <?php endforeach; ?>
             </select>
