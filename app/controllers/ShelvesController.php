@@ -4,81 +4,102 @@ namespace App\Controllers;
 use App\Models\Shelves;
 use App\Models\Products;
 use App\Models\ShelfProducts;
+use Core\Request;
+use Core\Session;
 
 class ShelvesController extends Controller {
     public function index() {
-        $shelves = Shelves::all()->getAll();
+        Shelves::all();
+        $shelves = Shelves::getAll();
         return view('shelves/index', ['shelves' => $shelves]);
     }
 
-    public function show() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $shelf = Shelves::find($id)->get();
-            $products = ShelfProducts::where('shelf_id', '=', $id)->getAll(); // Get products on this shelf
+    public function show($id) {
+        Shelves::find($id);
+        $shelf = Shelves::get();
+        if ($shelf) {
+            ShelfProducts::where('shelf_id', '=', $id);
+            $products = ShelfProducts::getAll();
             return view('shelves/show', ['shelf' => $shelf, 'products' => $products]);
         }
-        header('Location: /shelves');
+        return view('errors/404', ['message' => 'Shelf not found']);
     }
 
     public function create() {
         return view('shelves/create');
     }
 
-    public function store() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'name' => $_POST['name'] ?? '',
-            ];
-            if ($data['name']) {
-                Shelves::create($data);
-            }
+    public function store(Request $request) {
+        $request->validate([
+            'name' => 'required|string|max:50',
+        ]);
+
+        $data = [
+            'name' => request('name'),
+        ];
+
+        if (Shelves::create($data)) {
+            Session::flash('success', 'Shelf created successfully');
+            redirect('/shelves');
         }
-        header('Location: /shelves');
+
+        Session::flash('errors', ['general' => 'Failed to create shelf']);
+        Session::put('old', $data);
+        redirect('/shelves/create');
     }
 
-    public function edit() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $shelf = Shelves::find($id)->get();
-            $allProducts = Products::all()->getAll(); 
-            $currentProducts = ShelfProducts::where('shelf_id', '=', $id)->getAll(); 
+    public function edit($id) {
+        Shelves::find($id);
+        $shelf = Shelves::get();
+        if ($shelf) {
+            Products::all();
+            $allProducts = Products::getAll();
+            ShelfProducts::where('shelf_id', '=', $id);
+            $currentProducts = ShelfProducts::getAll();
             return view('shelves/edit', [
                 'shelf' => $shelf,
                 'allProducts' => $allProducts,
-                'currentProducts' => array_column($currentProducts, 'product_id') 
+                'currentProducts' => array_column($currentProducts, 'product_id'),
             ]);
         }
-        header('Location: /shelves');
+        return view('errors/404', ['message' => 'Shelf not found']);
     }
 
-    public function update() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'] ?? null;
-            $data = [
-                'name' => $_POST['name'] ?? '',
-            ];
-            if ($id && $data['name']) {
-                Shelves::update($id, $data);
+    public function update(Request $request, $id) {
+        $request->validate([
+            'name' => 'required|string|max:50',
+            'products' => 'array',
+        ]);
 
-                $newProductIds = $_POST['products'] ?? []; 
-                ShelfProducts::where('shelf_id', '=', $id)->delete($id);
-                foreach ($newProductIds as $productId) {
-                    ShelfProducts::create([
-                        'shelf_id' => $id,
-                        'product_id' => $productId,
-                    ]);
-                }
+        $data = [
+            'name' => request('name'),
+        ];
+
+        if (Shelves::update($id, $data)) {
+            ShelfProducts::where('shelf_id', '=', $id);
+            ShelfProducts::delete($id); 
+            $newProductIds = request('products');
+            foreach ($newProductIds as $productId) {
+                ShelfProducts::create([
+                    'shelf_id' => $id,
+                    'product_id' => $productId,
+                ]);
             }
+            Session::flash('success', 'Shelf updated successfully');
+            redirect('/shelves');
         }
-        header('Location: /shelves');
+
+        Session::flash('errors', ['general' => 'Failed to update shelf']);
+        Session::put('old', $data);
+        redirect("/shelves/edit/$id");
     }
 
-    public function destroy() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            Shelves::delete($id);
+    public function destroy($id) {
+        if (Shelves::delete($id)) {
+            Session::flash('success', 'Shelf deleted successfully');
+        } else {
+            Session::flash('errors', ['general' => 'Failed to delete shelf']);
         }
-        header('Location: /shelves');
+        redirect('/shelves');
     }
 }

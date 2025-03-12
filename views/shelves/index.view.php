@@ -2,6 +2,7 @@
 <?php component('header', compact('title')); ?>
 <div class="w-full min-h-screen bg-gray-100 p-6">
     <h1 class="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-900 text-transparent bg-clip-text mb-4">Shelves</h1>
+    
     <?php if (empty($shelves)): ?>
         <p class="text-gray-500">No shelves yet.</p>
     <?php else: ?>
@@ -23,9 +24,9 @@
                             <td class="p-2"><?= $shelf['name'] ?></td>
                             <td class="p-2"><?= count($products) ?> Products</td>
                             <td class="p-2">
-                                <a href="/shelves/show?id=<?= $shelf['ID'] ?>" class="text-blue-600">View</a> |
-                                <a href="/shelves/edit?id=<?= $shelf['ID'] ?>" class="text-blue-600">Edit</a> |
-                                <a href="/shelves/destroy?id=<?= $shelf['ID'] ?>" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="/shelves/<?= $shelf['ID'] ?>/show" class="text-blue-600">View</a> |
+                                <a href="/shelves/<?= $shelf['ID'] ?>/edit" class="text-blue-600">Edit</a> |
+                                <a href="/shelves/<?= $shelf['ID'] ?>/destroy" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

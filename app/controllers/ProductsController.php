@@ -3,73 +3,99 @@ namespace App\Controllers;
 
 use App\Models\Products;
 use App\Models\Suppliers;
+use Core\Request;
+use Core\Session;
 
 class ProductsController {
     public function index() {
-        $products = Products::all()->getAll();
+        Products::all(); // Prepares the query
+        $products = Products::getAll(); // Fetches all rows
         return view('products/index', ['products' => $products]);
     }
 
-    public function show() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $product = Products::find($id)->get();
+    public function show($id) {
+        dd($id);
+       $product = Products::find($id)->get(); // Prepares the query with $id
+        // Fetches the single row
+        if ($product) {
             return view('products/show', ['product' => $product]);
         }
-        header('Location: /products');
+        return view('errors/404', ['message' => 'Product not found']);
     }
 
     public function create() {
-        $suppliers = Suppliers::all()->getAll();
+        Suppliers::all();
+        $suppliers = Suppliers::getAll();
         return view('products/create', ['suppliers' => $suppliers]);
     }
 
-    public function store() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'name' => $_POST['name'] ?? '',
-                'description' => $_POST['description'] ?? '',
-                'price' => $_POST['price'] ?? 0.00,
-                'supplier_id' => $_POST['supplier_id'] ?? null,
-            ];
-            if ($data['name'] && $data['supplier_id']) {
-                Products::create($data);
-            }
+    public function store(Request $request) {
+        $request->validate([
+            'name'        => 'required|string|max:50',
+            'description' => 'required|string|max:255',
+            'price'       => 'required|numeric|min:0',
+            'supplier_id' => 'required|numeric',
+        ]);
+
+        $data = [
+            'name'        => request('name'),
+            'description' => request('description'),
+            'price'       => request('price'),
+            'supplier_id' => request('supplier_id'),
+        ];
+
+        if (Products::create($data)) {
+            Session::flash('success', 'Product created successfully');
+            redirect('/products');
         }
-        header('Location: /products');
+
+        Session::flash('errors', ['general' => 'Failed to create product']);
+        Session::put('old', $data);
+        redirect('/products/create');
     }
 
-    public function edit() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $product = Products::find($id)->get();
-            $suppliers = Suppliers::all()->getAll();
+    public function edit($id) {
+        Products::find($id);
+        $product = Products::get();
+        if ($product) {
+            Suppliers::all();
+            $suppliers = Suppliers::getAll();
             return view('products/edit', ['product' => $product, 'suppliers' => $suppliers]);
         }
-        header('Location: /products');
+        return view('errors/404', ['message' => 'Product not found']);
     }
 
-    public function update() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'] ?? null;
-            $data = [
-                'name' => $_POST['name'] ?? '',
-                'description' => $_POST['description'] ?? '',
-                'price' => $_POST['price'] ?? 0.00,
-                'supplier_id' => $_POST['supplier_id'] ?? null,
-            ];
-            if ($id && $data['name'] && $data['supplier_id']) {
-                Products::update($id, $data);
-            }
+    public function update(Request $request, $id) {
+        $request->validate([
+            'name'        => 'required|string|max:50',
+            'description' => 'required|string|max:255',
+            'price'       => 'required|numeric|min:0',
+            'supplier_id' => 'required|numeric',
+        ]);
+
+        $data = [
+            'name'        => request('name'),
+            'description' => request('description'),
+            'price'       => request('price'),
+            'supplier_id' => request('supplier_id'),
+        ];
+
+        if (Products::update($id, $data)) {
+            Session::flash('success', 'Product updated successfully');
+            redirect('/products');
         }
-        header('Location: /products');
+
+        Session::flash('errors', ['general' => 'Failed to update product']);
+        Session::put('old', $data);
+        redirect("/products/edit/$id");
     }
 
-    public function destroy() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            Products::delete($id);
+    public function destroy($id) {
+        if (Products::delete($id)) {
+            Session::flash('success', 'Product deleted successfully');
+        } else {
+            Session::flash('errors', ['general' => 'Failed to delete product']);
         }
-        header('Location: /products');
+        redirect('/products');
     }
 }

@@ -3,75 +3,115 @@ namespace App\Controllers;
 
 use App\Models\Orders;
 use App\Models\Products;
+use Core\Request;
+use Core\Session;
 
 class OrdersController extends Controller {
     public function index() {
-        $orders = Orders::all()->getAll();
+        Orders::all();
+        $orders = Orders::getAll();
         return view('orders/index', ['orders' => $orders]);
     }
 
-    public function show() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $order = Orders::find($id)->get();
+    public function show($id) {
+        Orders::find($id);
+        $order = Orders::get();
+        if ($order) {
             return view('orders/show', ['order' => $order]);
         }
-        header('Location: /orders');
+        return view('errors/404', ['message' => 'Order not found']);
     }
 
     public function create() {
-        $products = Products::all()->getAll();
+        Products::all();
+        $products = Products::getAll();
         return view('orders/create', ['products' => $products]);
     }
 
-    public function store() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user = auth();
-            $user_id = (!$user || !isset($user['ID'])) ? 1 : $user['ID'];
+    public function store(Request $request) {
+        $request->validate([
+            'product_id' => 'required|numeric',
+            'quantity'   => 'required|numeric|min:1',
+            'status'     => 'required',
+        ]);
 
-            $data = [
-                'user_id' => $user_id, // Correctly assign the ID
-                'status' => $_POST['status'] ?? 'pending',  
-                'product_id' => $_POST['product_id'] ?? null,
-                'quantity' => $_POST['quantity'] ?? 1,
-            ];
-            if ($data['product_id'] && $data['quantity']) {
-                Orders::create($data);
-            }
+        $user = auth();
+        $user_id = (!$user || !isset($user['ID']));
+        $status = request('status');
+        $validStatuses = ['pending', 'completed', 'cancelled'];
+
+        if (!in_array($status, $validStatuses)) {
+            Session::flash('errors', ['status' => 'Invalid status value']);
+            Session::put('old', $request->all());
+            redirect('/orders/create');
         }
-        header('Location: /orders');
+
+        $data = [
+            'user_id'    => $user_id,
+            'status'     => $status,
+            'product_id' => request('product_id'),
+            'quantity'   => request('quantity'),
+        ];
+
+        if (Orders::create($data)) {
+            Session::flash('success', 'Order created successfully');
+            redirect('/orders');
+        }
+
+        Session::flash('errors', ['general' => 'Failed to create order']);
+        Session::put('old', $data);
+        redirect('/orders/create');
     }
 
-    public function edit() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            $order = Orders::find($id)->get();
-            $products = Products::all()->getAll();
+    public function edit($id) {
+        Orders::find($id);
+        $order = Orders::get();
+        if ($order) {
+            Products::all();
+            $products = Products::getAll();
             return view('orders/edit', ['order' => $order, 'products' => $products]);
         }
-        header('Location: /orders');
+        return view('errors/404', ['message' => 'Order not found']);
     }
 
-    public function update() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'] ?? null;
-            $data = [
-                'status' => $_POST['status'] ?? 'pending',
-                'product_id' => $_POST['product_id'] ?? null,
-                'quantity' => $_POST['quantity'] ?? 1,
-            ];
-            if ($id && $data['product_id'] && $data['quantity']) {
-                Orders::update($id, $data);
-            }
+    public function update(Request $request, $id) {
+        $request->validate([
+            'product_id' => 'required|numeric',
+            'quantity'   => 'required|numeric|min:1',
+            'status'     => 'required',
+        ]);
+
+        $status = request('status');
+        $validStatuses = ['pending', 'completed', 'cancelled'];
+
+        if (!in_array($status, $validStatuses)) {
+            Session::flash('errors', ['status' => 'Invalid status value']);
+            Session::put('old', $request->all());
+            redirect("/orders/edit/$id");
         }
-        header('Location: /orders');
+
+        $data = [
+            'status'     => $status,
+            'product_id' => request('product_id'),
+            'quantity'   => request('quantity'),
+        ];
+
+        if (Orders::update($id, $data)) {
+            Session::flash('success', 'Order updated successfully');
+            redirect('/orders');
+        }
+
+        Session::flash('errors', ['general' => 'Failed to update order']);
+        Session::put('old', $data);
+        redirect("/orders/edit/$id");
     }
 
-    public function destroy() {
-        $id = $_GET['id'] ?? null;
-        if ($id) {
-            Orders::delete($id);
+    public function destroy($id) {
+        if (Orders::delete($id)) {
+            Session::flash('success', 'Order deleted successfully');
+        } else {
+            Session::flash('errors', ['general' => 'Failed to delete order']);
         }
-        header('Location: /orders');
+        redirect('/orders');
     }
 }

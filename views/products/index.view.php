@@ -2,6 +2,7 @@
 <?php component('header', compact('title')); ?>
 <div class="w-full min-h-screen bg-gray-100 p-6">
     <h1 class="text-4xl font-extrabold bg-gradient-to-r from-blue-500 to-purple-900 text-transparent bg-clip-text mb-4">Products</h1>
+    
     <?php if (empty($products)): ?>
         <p class="text-gray-500">No products yet.</p>
     <?php else: ?>
@@ -24,9 +25,9 @@
                             <td class="p-2">$<?= number_format($product['price'], 2) ?></td>
                             <td class="p-2"><?= $product['supplier_id'] ?></td>
                             <td class="p-2">
-                                <a href="/products/show?id=<?= $product['ID'] ?>" class="text-blue-600">View</a> |
-                                <a href="/products/edit?id=<?= $product['ID'] ?>" class="text-blue-600">Edit</a> |
-                                <a href="/products/destroy?id=<?= $product['ID'] ?>" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="/products/<?= $product['ID'] ?>/show" class="text-blue-600">View</a> |
+                                <a href="/products/<?= $product['ID'] ?>/edit" class="text-blue-600">Edit</a> |
+                                <a href="/products/<?= $product['ID'] ?>/destroy" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
