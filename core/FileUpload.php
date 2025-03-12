@@ -61,7 +61,6 @@ class FileUpload
         return $ext;
     }
 
-
     /**
      *    Check if the file input empty ro not.
      *    @return boolean
