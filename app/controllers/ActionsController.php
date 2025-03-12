@@ -3,10 +3,11 @@ namespace App\Controllers;
 
 use App\Models\Actions;
 
-class ActionsController {
-    public function index(): void {
-        Actions::all();
-        $actions = Actions::getAll();
-        view("actions/index", compact('actions'));
+class ActionsController
+{
+    public function index()
+    {
+        $actions = Actions::all()->getAll();
+        return view('actions/index', ['actions' => $actions]);
     }
 }

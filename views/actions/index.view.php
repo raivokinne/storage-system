@@ -19,10 +19,10 @@
                 <tbody>
                     <?php foreach ($actions as $action): ?>
                         <tr class="border-b">
-                            <td class="p-2"><?= $action['ID'] ?></td>
-                            <td class="p-2"><?= $action['user_id'] ?></td>
-                            <td class="p-2"><?= $action['action'] ?></td>
-                            <td class="p-2"><?= $action['model'] ?></td>
+                            <td class="p-2"><?php echo $action['ID']?></td>
+                            <td class="p-2"><?php echo $action['user_id']?></td>
+                            <td class="p-2"><?php echo $action['action']?></td>
+                            <td class="p-2"><?php echo $action['model']?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
