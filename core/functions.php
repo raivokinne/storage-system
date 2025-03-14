@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\Action;
+use App\Models\Actions;
 use App\Models\User;
+use Cassandra\Date;
 use Core\Request;
 use Core\Session;
 use JetBrains\PhpStorm\NoReturn;
@@ -118,8 +119,11 @@ function request(string $field)
     $method = $method ?? $info['function'];
     $action = in_array($method, ['destroy', 'store', 'update']) ? $method : 'other';
     $model = $model ?? str_replace('Controller', '', $controllerName);
-
-    Action::create(compact('user_id', 'action', 'model', 'model', 'old_value', 'new_value'));
+    $old_value = json_encode($old_value);
+    $new_value = json_encode($new_value);
+    $timestamp = date('Y-m-d H:i:s');
+    try {Actions::create(compact('user_id', 'action', 'model', 'old_value', 'new_value', 'timestamp'));}
+    catch (Exception $e) {dd($e);}
 
     redirect($path);
 }
