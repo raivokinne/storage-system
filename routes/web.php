@@ -25,7 +25,6 @@ $router->get('/logout', [SessionController::class, 'destroy']);
 $router->post('/upload', [TestController::class, 'test']);
 $router->get('/upload', [TestController::class, 'idk']);
 
-
 $router->get('/orders', [OrdersController::class, 'index']);
 $router->get('/orders/:id/show', [OrdersController::class, 'show']);
 $router->get('/orders/create', [OrdersController::class, 'create']);

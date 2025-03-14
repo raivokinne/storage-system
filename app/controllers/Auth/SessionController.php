@@ -9,17 +9,18 @@ use Core\Session;
 
 class SessionController extends Controller
 {
-    public function create()
+    public function create(): mixed
     {
         if (isset($_SESSION['user'])) {
             redirect(Router::previousUrl());
         }
 
-        view('auth/login', ['title' => 'Login']);
-        return;
+        return view('auth/login', ['title' => 'Login']);
     }
-
-    public function store(Request $request)
+    /**
+     * @return void
+     */
+    public function store(Request $request): void
     {
         if (isset($_SESSION['user'])) {
             redirect(Router::previousUrl());
@@ -47,8 +48,10 @@ class SessionController extends Controller
 
         redirect('/');
     }
-
-    public function destroy()
+    /**
+     * @return void
+     */
+    public function destroy(): void
     {
         if (! isset($_SESSION['user'])) {
             header(Router::previousUrl());

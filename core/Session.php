@@ -4,27 +4,43 @@ namespace Core;
 
 class Session
 {
-    public static function put($key, $value)
+    /**
+     * @return void
+     * @param mixed $key
+     * @param mixed $value
+     */
+    public static function put($key, $value): void
     {
         $_SESSION[$key] = $value;
     }
-
-    public static function get($key, $default = null)
+    /**
+     * @param mixed $key
+     * @param mixed $default
+     */
+    public static function get($key, $default = null): mixed
     {
         return $_SESSION['_flash'][$key] ?? $_SESSION[$key] ?? $default;
     }
-
-    public static function flash($key, $value)
+    /**
+     * @return void
+     * @param mixed $key
+     * @param mixed $value
+     */
+    public static function flash($key, $value): void
     {
         $_SESSION['_flash'][$key] = $value;
     }
-
-    public static function unflash()
+    /**
+     * @return void
+     */
+    public static function unflash(): void
     {
         unset($_SESSION['_flash']);
     }
-
-    public static function flush()
+    /**
+     * @return void
+     */
+    public static function flush(): void
     {
         $_SESSION = [];
     }
