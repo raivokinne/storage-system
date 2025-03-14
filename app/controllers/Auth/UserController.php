@@ -33,8 +33,6 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()) {redirect('/');}
-
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:user,email',
@@ -57,8 +55,6 @@ class UserController extends Controller
 
     public function image(Request $request): void
     {
-        if (!auth()) {redirect('/');}
-
         if (request('image')['size'] !== 0) {
 
             $request->validate([
