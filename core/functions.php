@@ -1,9 +1,7 @@
 <?php
 
-use App\Models\Actions;
+use App\Models\Action;
 use App\Models\User;
-use Cassandra\Date;
-use Core\Request;
 use Core\Session;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -29,14 +27,15 @@ function base_path($path): string
     return BASE_PATH . $path;
 }
 
-function view($path, $attributes = []): void
+function view($path, $attributes = [])
 {
+	ob_start();
     extract($attributes);
-
-    require base_path('views/' . $path . '.view.php');
+    include base_path('views/' . $path . '.view.php');
+	return ob_end_flush();
 }
 
-#[NoReturn] function redirect($path): void
+function redirect($path): void
 {
     header("location: {$path}");
     exit();
@@ -46,6 +45,10 @@ function component($component, $attributes = []): void
 {
     extract($attributes);
     require base_path('views/components/' . $component . '.php');
+}
+
+function session(string $key, string $value) {
+	return $_SESSION[$key][$value];
 }
 
 function auth(): bool
@@ -119,11 +122,8 @@ function request(string $field)
     $method = $method ?? $info['function'];
     $action = in_array($method, ['destroy', 'store', 'update']) ? $method : 'other';
     $model = $model ?? str_replace('Controller', '', $controllerName);
-    $old_value = json_encode($old_value);
-    $new_value = json_encode($new_value);
-    $timestamp = date('Y-m-d H:i:s');
-    try {Actions::create(compact('user_id', 'action', 'model', 'old_value', 'new_value', 'timestamp'));}
-    catch (Exception $e) {dd($e);}
+
+    Action::create(compact('user_id', 'action', 'model', 'model', 'old_value', 'new_value'));
 
     redirect($path);
 }
