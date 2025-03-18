@@ -7,28 +7,26 @@ use Core\Request;
 use Core\Session;
 
 class OrdersController extends Controller {
-    public function index() {
-        Orders::all();
-        $orders = Orders::getAll();
+    public function index(Request $request, $parameters = []) {
+        $orders = Orders::all()->getAll(); // Prepare with all()
         return view('orders/index', ['orders' => $orders]);
     }
 
-    public function show($id) {
-        Orders::find($id);
-        $order = Orders::get();
+    public function show(Request $request, $parameters) {
+        $id = (int) $parameters['id'];
+        $order = Orders::find($id)->get();
         if ($order) {
             return view('orders/show', ['order' => $order]);
         }
         return view('errors/404', ['message' => 'Order not found']);
     }
 
-    public function create() {
-        Products::all();
-        $products = Products::getAll();
+    public function create(Request $request, $parameters = []) {
+        $products = Products::all()->getAll(); // Prepare with all()
         return view('orders/create', ['products' => $products]);
     }
 
-    public function store(Request $request) {
+    public function store(Request $request, $parameters = []) {
         $request->validate([
             'product_id' => 'required|numeric',
             'quantity'   => 'required|numeric|min:1',
@@ -36,7 +34,7 @@ class OrdersController extends Controller {
         ]);
 
         $user = auth();
-        $user_id = (!$user || !isset($user['ID']));
+        $user_id = $user && isset($user['ID']) ? $user['ID'] : null;
         $status = request('status');
         $validStatuses = ['pending', 'completed', 'cancelled'];
 
@@ -63,18 +61,18 @@ class OrdersController extends Controller {
         redirect('/orders/create');
     }
 
-    public function edit($id) {
-        Orders::find($id);
-        $order = Orders::get();
+    public function edit(Request $request, $parameters) {
+        $id = (int) $parameters['id'];
+        $order = Orders::find($id)->get();
         if ($order) {
-            Products::all();
-            $products = Products::getAll();
+            $products = Products::all()->getAll(); // Prepare with all()
             return view('orders/edit', ['order' => $order, 'products' => $products]);
         }
         return view('errors/404', ['message' => 'Order not found']);
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $parameters) {
+        $id = (int) $parameters['id'];
         $request->validate([
             'product_id' => 'required|numeric',
             'quantity'   => 'required|numeric|min:1',
@@ -106,7 +104,8 @@ class OrdersController extends Controller {
         redirect("/orders/edit/$id");
     }
 
-    public function destroy($id) {
+    public function destroy(Request $request, $parameters) {
+        $id = (int) $parameters['id'];
         if (Orders::delete($id)) {
             Session::flash('success', 'Order deleted successfully');
         } else {
@@ -114,5 +113,6 @@ class OrdersController extends Controller {
         }
         redirect('/orders');
     }
+    
 }
 

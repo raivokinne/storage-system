@@ -26,9 +26,9 @@
                             <td class="p-2"><?= $order['quantity'] ?></td>
                             <td class="p-2"><?= $order['status'] ?></td>
                             <td class="p-2">
-                                <a href="/orders/show?id=<?= $order['ID'] ?>" class="text-blue-600">View</a> |
-                                <a href="/orders/edit?id=<?= $order['ID'] ?>" class="text-blue-600">Edit</a> |
-                                <a href="/orders/destroy?id=<?= $order['ID'] ?>" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="/orders/<?= $order['ID'] ?>/show" class="text-blue-600">View</a> |
+                                <a href="/orders/<?= $order['ID'] ?>/edit" class="text-blue-600">Edit</a> |
+                                <a href="/orders/<?= $order['ID'] ?>/destroy" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
