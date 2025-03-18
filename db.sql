@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS Users (
     name VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
+    role ENUM('worker', 'admin') default 'worker',
     image VARCHAR(255),
     PRIMARY KEY (ID)
 );
@@ -53,8 +54,9 @@ CREATE TABLE IF NOT EXISTS Actions (
     user_id INT NOT NULL,
     action ENUM('destroy', 'store', 'update', 'other') NOT NULL,
     model VARCHAR(50) NOT NULL,
-    old_value VARCHAR(255),
-    new_value VARCHAR(255),
+    old_value JSON,
+    new_value JSON,
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (ID),
     FOREIGN KEY (user_id) REFERENCES Users(ID) ON DELETE CASCADE
 );

@@ -50,7 +50,9 @@ class UserController extends Controller
 
         Authenticator::login($user);
 
-        redirect('/');
+        unset($user['password']);
+
+        redirect_and_save('/', [], $user, 'User', 'store');
     }
 
     public function image(Request $request): void
