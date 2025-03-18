@@ -43,7 +43,7 @@ class FileUpload
      *    Get the file extension.
      *    @return string
      */
-    public function parseExtension()
+    public function parseExtension(): ?string
     {
         $ext = null;
 
@@ -59,75 +59,6 @@ class FileUpload
         }
 
         return $ext;
-    }
-
-
-    /**
-     *    Check if the file input empty ro not.
-     *    @return boolean
-     */
-    public function fileExists()
-    {
-        $file = null;
-        $name = $this->name;
-
-        if (is_array($name)) {
-            $name = implode('', $name);
-        }
-
-        if (! empty($name)) {
-            $file = $name;
-        }
-
-        return isset($this->file) && ! empty($file) && ! is_null($file);
-    }
-
-    /**
-     *    Create random name for the new file.
-     *    @return void
-     */
-    public function createRandomName()
-    {
-        $this->randomFileName = true;
-    }
-
-    /**
-     *    Create new file name.
-     *    @return void
-     */
-    public function createFileName(string $filename)
-    {
-        $this->newFileName = $filename;
-    }
-
-    /**
-     *    Set the destination path.
-     *    @param string, $path
-     */
-    public function path(string $path)
-    {
-        $path = trim($path, '/');
-        $path = trim($path, '\\');
-        $path = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
-        $path = $path . '' . DIRECTORY_SEPARATOR;
-
-        $this->path = $path;
-    }
-
-    /**
-     *    Upload the files to the specified destination.
-     */
-    public function upload()
-    {
-        if (! $this->fileExists()) {
-            $this->error('Choose files to upload.');
-        }
-
-        if (empty($this->path) || $this->path == null) {
-            $this->error('You have to use path method to specify the destination.');
-        }
-
-        $this->move();
     }
 
     /**
@@ -221,7 +152,7 @@ class FileUpload
      * @return void
      * @param mixed $fileError
      */
-    private function checkFilesErrors($fileError)
+    private function checkFilesErrors($fileError): void
     {
         if ($fileError > 0) {
             $this->uploadErrors[] = $this->filesErrorMessages[$fileError];
@@ -231,7 +162,7 @@ class FileUpload
      * @return void
      * @param mixed $errorMessage
      */
-    private function error($errorMessage)
+    private function error($errorMessage): void
     {
         $this->uploadErrors[] = $errorMessage;
     }
@@ -240,7 +171,7 @@ class FileUpload
      *    Move uploaded files.
      * @return void
      */
-    public function move()
+    public function move(): void
     {
         if (! is_dir(BASE_PATH . "/public/storage/" . $this->path)) {
             mkdir(BASE_PATH . "/public/storage/" . $this->path);
