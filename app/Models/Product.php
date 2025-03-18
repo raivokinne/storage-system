@@ -3,6 +3,6 @@ namespace App\Models;
 
 use Core\Model;
 
-class Products extends Model {
+class Product extends Model {
     protected static string $table = 'Products';
 }
