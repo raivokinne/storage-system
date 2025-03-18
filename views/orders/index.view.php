@@ -20,15 +20,15 @@
                 <tbody>
                     <?php foreach ($orders as $order): ?>
                         <tr class="border-b hover:bg-gray-50">
-                            <td class="p-2"><?= $order['ID'] ?></td>
-                            <td class="p-2"><?= $order['user_id'] ?></td>
-                            <td class="p-2"><?= $order['product_id'] ?></td>
-                            <td class="p-2"><?= $order['quantity'] ?></td>
-                            <td class="p-2"><?= $order['status'] ?></td>
+                            <td class="p-2"><?php echo $order['ID']?></td>
+                            <td class="p-2"><?php echo $order['user_id']?></td>
+                            <td class="p-2"><?php echo $order['product_id']?></td>
+                            <td class="p-2"><?php echo $order['quantity']?></td>
+                            <td class="p-2"><?php echo $order['status']?></td>
                             <td class="p-2">
-                                <a href="/orders/<?= $order['ID'] ?>/show" class="text-blue-600">View</a> |
-                                <a href="/orders/<?= $order['ID'] ?>/edit" class="text-blue-600">Edit</a> |
-                                <a href="/orders/<?= $order['ID'] ?>/destroy" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
+                                <a href="/orders/show?id=<?php echo $order['ID']?>" class="text-blue-600">View</a> |
+                                <a href="/orders/edit?id=<?php echo $order['ID']?>" class="text-blue-600">Edit</a> |
+                                <a href="/orders/destroy?id=<?php echo $order['ID']?>" class="text-red-600" onclick="return confirm('Are you sure?')">Delete</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
