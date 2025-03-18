@@ -7,8 +7,8 @@
         <?php if (empty($actions)): ?>
             <p class="text-gray-700">No history yet. Perform some actions to see them here!</p>
         <?php else: ?>
-            <table class="mx-auto border-collapse w-3/4">
-                <thead>
+            <table class="mx-auto w-3/4 border border-gray-600 shadow-lg">
+                <thead class="">
                     <tr class="bg-gray-200">
                         <th class="p-2">ID</th>
                         <th class="p-2">User ID</th>
