@@ -29,10 +29,10 @@ function base_path($path): string
 
 function view($path, $attributes = [])
 {
-	ob_start();
+    ob_start();
     extract($attributes);
     include base_path('views/' . $path . '.view.php');
-	return ob_end_flush();
+    return ob_end_flush();
 }
 
 function redirect($path): void
@@ -47,8 +47,9 @@ function component($component, $attributes = []): void
     require base_path('views/components/' . $component . '.php');
 }
 
-function session(string $key, string $value) {
-	return $_SESSION[$key][$value];
+function session(string $key, string $value)
+{
+    return $_SESSION[$key][$value];
 }
 
 function auth(): bool
@@ -109,19 +110,19 @@ function request(string $field)
  * @param string|null $method
  * @return void
  */
-#[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value , string $model, string $method): void
+#[NoReturn] function redirect_and_save(string $path, mixed $old_value, mixed $new_value, string $model, string $method): void
 {
     $backtrace = debug_backtrace();
-    $info = $backtrace[1];
+    $info      = $backtrace[1];
 
     $controllerFull = explode('\\', $info['class']);
 
     $controllerName = array_pop($controllerFull);
-    $email = $_SESSION['user']['email'];
-    $user_id = User::where('email', '=' , $email)->get()['ID'];
-    $method = $method ?? $info['function'];
-    $action = in_array($method, ['destroy', 'store', 'update']) ? $method : 'other';
-    $model = $model ?? str_replace('Controller', '', $controllerName);
+    $email          = $_SESSION['user']['email'];
+    $user_id        = User::where('email', '=', $email)->get()['ID'];
+    $method         = $method ?? $info['function'];
+    $action         = in_array($method, ['destroy', 'store', 'update']) ? $method : 'other';
+    $model          = $model ?? str_replace('Controller', '', $controllerName);
 
     Action::create(compact('user_id', 'action', 'model', 'model', 'old_value', 'new_value'));
 
