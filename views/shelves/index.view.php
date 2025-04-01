@@ -18,7 +18,7 @@
                 </thead>
                 <tbody>
                     <?php foreach ($shelves as $shelf): ?>
-                        <?php $products = \App\Models\ShelfProducts::where('shelf_id', '=', $shelf['ID'])->getAll(); ?>
+                        <?php $products = \App\Models\ShelfProduct::where('shelf_id', '=', $shelf['ID'])->getAll(); ?>
                         <tr class="border-b hover:bg-gray-50">
                             <td class="p-2"><?= $shelf['ID'] ?></td>
                             <td class="p-2"><?= $shelf['name'] ?></td>

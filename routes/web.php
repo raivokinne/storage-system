@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\ActionsController;
+use App\Controllers\AdminController;
 use App\Controllers\Auth\SessionController;
 use App\Controllers\Auth\UserController;
 use App\Controllers\OrdersController;
@@ -46,5 +47,9 @@ $router->post('/shelves/:id/update', [ShelvesController::class, 'update']);
 $router->get('/shelves/:id/destroy', [ShelvesController::class, 'destroy']);
 
 $router->get('/actions', [ActionsController::class, 'index']);
+
+$router->get('/admin', [AdminController::class, 'index']);
+$router->get('/admin/create', [AdminController::class, 'create']);
+$router->post('/admin/store', [AdminController::class, 'store']);
 
 $router->post('/profile/image', [UserController::class, 'image']);

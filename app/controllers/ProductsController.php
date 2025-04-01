@@ -1,8 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Products;
-use App\Models\Suppliers;
+use App\Models\Product;
+use App\Models\Supplier;
 use Core\Request;
 use Core\Session;
 
@@ -10,15 +10,15 @@ class ProductsController
 {
     public function index(Request $request, $parameters = [])
     {
-        Products::all();                // Prepares the query
-        $products = Products::getAll(); // Fetches all rows
+        Product::all();                // Prepares the query
+        $products = Product::getAll(); // Fetches all rows
         return view('products/index', ['products' => $products]);
     }
 
     public function show(Request $request, $parameters)
     {
         $id      = (int) $parameters['id']; // Extract and cast id to int
-        $product = Products::find($id)->get();
+        $product = Product::find($id)->get();
         if ($product) {
             return view('products/show', ['product' => $product]);
         }
@@ -27,8 +27,8 @@ class ProductsController
 
     public function create(Request $request, $parameters = [])
     {
-        Suppliers::all();
-        $suppliers = Suppliers::getAll();
+        Supplier::all();
+        $suppliers = Supplier::getAll();
         return view('products/create', ['suppliers' => $suppliers]);
     }
 
@@ -48,7 +48,7 @@ class ProductsController
             'supplier_id' => request('supplier_id'),
         ];
 
-        if (Products::create($data)) {
+        if (Product::create($data)) {
             Session::flash('success', 'Product created successfully');
             redirect('/products');
         }
@@ -61,10 +61,10 @@ class ProductsController
     public function edit(Request $request, $parameters)
     {
         $id      = (int) $parameters['id']; // Extract and cast id to int
-        $product = Products::find($id)->get();
+        $product = Product::find($id)->get();
         if ($product) {
-            Suppliers::all();
-            $suppliers = Suppliers::getAll();
+            Supplier::all();
+            $suppliers = Supplier::getAll();
             return view('products/edit', ['product' => $product, 'suppliers' => $suppliers]);
         }
         return view('errors/404', ['message' => 'Product not found']);
@@ -89,7 +89,7 @@ class ProductsController
             'supplier_id' => request('supplier_id'),
         ];
 
-        if (Products::update($id, $data)) {
+        if (Product::update($id, $data)) {
             Session::flash('success', 'Product updated successfully');
             redirect('/products');
         }
@@ -102,7 +102,7 @@ class ProductsController
     public function destroy(Request $request, $parameters)
     {
         $id = (int) $parameters['id']; // Extract and cast id to int
-        if (Products::delete($id)) {
+        if (Product::delete($id)) {
             Session::flash('success', 'Product deleted successfully');
         } else {
             Session::flash('errors', ['general' => 'Failed to delete product']);
