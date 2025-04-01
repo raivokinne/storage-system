@@ -54,7 +54,7 @@ class OrdersController extends Controller
             redirect('/orders/create');
         }
 
-        $data = [
+        $data = [   
             'user_id'    => $user_id,
             'status'     => $status,
             'product_id' => request('product_id'),

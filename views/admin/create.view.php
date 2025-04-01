@@ -1,4 +1,4 @@
-
+<?php use Core\Session; ?>
 <form action="/admin/store" method="POST">
     <div>
         <label for="name">Supplier Name:</label>
