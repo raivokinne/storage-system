@@ -1,9 +1,9 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Products;
-use App\Models\ShelfProducts;
-use App\Models\Shelves;
+use App\Models\Product;
+use App\Models\ShelfProduct;
+use App\Models\Shelf;
 use Core\Request;
 use Core\Session;
 
@@ -11,16 +11,16 @@ class ShelvesController extends Controller
 {
     public function index(Request $request, $parameters = [])
     {
-        $shelves = Shelves::all()->getAll(); // Prepare with all() before getAll()
+        $shelves = Shelf::all()->getAll(); // Prepare with all() before getAll()
         return view('shelves/index', ['shelves' => $shelves]);
     }
 
     public function show(Request $request, $parameters)
     {
         $id    = (int) $parameters['id'];
-        $shelf = Shelves::find($id)->get();
+        $shelf = Shelf::find($id)->get();
         if ($shelf) {
-            $products = ShelfProducts::where('shelf_id', '=', $id)->getAll();
+            $products = ShelfProduct::where('shelf_id', '=', $id)->getAll();
             return view('shelves/show', ['shelf' => $shelf, 'products' => $products]);
         }
         return view('errors/404', ['message' => 'Shelf not found']);
@@ -41,7 +41,7 @@ class ShelvesController extends Controller
             'name' => request('name'),
         ];
 
-        if (Shelves::create($data)) {
+        if (Shelf::create($data)) {
             Session::flash('success', 'Shelf created successfully');
             redirect('/shelves');
         }
@@ -54,10 +54,10 @@ class ShelvesController extends Controller
     public function edit(Request $request, $parameters)
     {
         $id    = (int) $parameters['id'];
-        $shelf = Shelves::find($id)->get();
+        $shelf = Shelf::find($id)->get();
         if ($shelf) {
-            $allProducts     = Products::all()->getAll(); // Prepare with all()
-            $currentProducts = array_column(ShelfProducts::where('shelf_id', '=', $id)->getAll(), 'product_id');
+            $allProducts     = Product::all()->getAll(); // Prepare with all()
+            $currentProducts = array_column(ShelfProduct::where('shelf_id', '=', $id)->getAll(), 'product_id');
             return view('shelves/edit', [
                 'shelf'           => $shelf,
                 'allProducts'     => $allProducts,
@@ -79,11 +79,11 @@ class ShelvesController extends Controller
             'name' => request('name'),
         ];
 
-        if (Shelves::update($id, $data)) {
-            ShelfProducts::where('shelf_id', '=', $id)->delete($id);
+        if (Shelf::update($id, $data)) {
+            ShelfProduct::where('shelf_id', '=', $id)->delete($id);
             $newProductIds = request('products');
             foreach ($newProductIds as $productId) {
-                ShelfProducts::create([
+                ShelfProduct::create([
                     'shelf_id'   => $id,
                     'product_id' => $productId,
                 ]);
@@ -100,7 +100,7 @@ class ShelvesController extends Controller
     public function destroy(Request $request, $parameters)
     {
         $id = (int) $parameters['id'];
-        if (Shelves::delete($id)) {
+        if (Shelf::delete($id)) {
             Session::flash('success', 'Shelf deleted successfully');
         } else {
             Session::flash('errors', ['general' => 'Failed to delete shelf']);

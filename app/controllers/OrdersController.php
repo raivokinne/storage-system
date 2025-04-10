@@ -1,8 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Orders;
-use App\Models\Products;
+use App\Models\Order;
+use App\Models\Product;
 use Core\Request;
 use Core\Session;
 
@@ -10,14 +10,14 @@ class OrdersController extends Controller
 {
     public function index(Request $request, $parameters = [])
     {
-        $orders = Orders::all()->getAll(); // Prepare with all()
+        $orders = Order::all()->getAll(); // Prepare with all()
         return view('orders/index', ['orders' => $orders]);
     }
 
     public function show(Request $request, $parameters)
     {
         $id    = (int) $parameters['id'];
-        $order = Orders::find($id)->get();
+        $order = Order::find($id)->get();
         if ($order) {
             return view('orders/show', ['order' => $order]);
         }
@@ -26,7 +26,7 @@ class OrdersController extends Controller
 
     public function create(Request $request, $parameters = [])
     {
-        $products = Products::all()->getAll(); // Prepare with all()
+        $products = Product::all()->getAll(); // Prepare with all()
         return view('orders/create', ['products' => $products]);
     }
 
@@ -37,9 +37,14 @@ class OrdersController extends Controller
             'quantity'   => 'required|numeric|min:1',
             'status'     => 'required',
         ]);
-
+        $user = auth();
+    // Check if $user is valid and has an 'id' key
+    if (!$user || !isset($user['id'])) {
+        Session::flash('errors', ['auth' => 'You must be logged in to create an order']);
+        redirect('/login'); // Redirect to login page
+    }
         $user          = auth();
-        $user_id       = $user && isset($user['ID']) ? $user['ID'] : null;
+        $user_id = (int) $user['id'];
         $status        = request('status');
         $validStatuses = ['pending', 'completed', 'cancelled'];
 
@@ -49,14 +54,14 @@ class OrdersController extends Controller
             redirect('/orders/create');
         }
 
-        $data = [
+        $data = [   
             'user_id'    => $user_id,
             'status'     => $status,
             'product_id' => request('product_id'),
             'quantity'   => request('quantity'),
         ];
 
-        if (Orders::create($data)) {
+        if (Order::create($data)) {
             Session::flash('success', 'Order created successfully');
             redirect('/orders');
         }
@@ -69,9 +74,9 @@ class OrdersController extends Controller
     public function edit(Request $request, $parameters)
     {
         $id    = (int) $parameters['id'];
-        $order = Orders::find($id)->get();
+        $order = Order::find($id)->get();
         if ($order) {
-            $products = Products::all()->getAll(); // Prepare with all()
+            $products = Product::all()->getAll(); // Prepare with all()
             return view('orders/edit', ['order' => $order, 'products' => $products]);
         }
         return view('errors/404', ['message' => 'Order not found']);
@@ -101,7 +106,7 @@ class OrdersController extends Controller
             'quantity'   => request('quantity'),
         ];
 
-        if (Orders::update($id, $data)) {
+        if (Order::update($id, $data)) {
             Session::flash('success', 'Order updated successfully');
             redirect('/orders');
         }
@@ -114,7 +119,7 @@ class OrdersController extends Controller
     public function destroy(Request $request, $parameters)
     {
         $id = (int) $parameters['id'];
-        if (Orders::delete($id)) {
+        if (Order::delete($id)) {
             Session::flash('success', 'Order deleted successfully');
         } else {
             Session::flash('errors', ['general' => 'Failed to delete order']);

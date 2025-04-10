@@ -18,7 +18,7 @@
                     </thead>
                     <tbody>
                         <?php foreach ($products as $product): ?>
-                            <?php $productDetails = \App\Models\Products::find($product['product_id'])->get(); ?>
+                            <?php $productDetails = \App\Models\Product::find($product['product_id'])->get(); ?>
                             <tr class="border-b hover:bg-gray-50">
                                 <td class="p-2"><?= $product['product_id'] ?></td>
                                 <td class="p-2"><?= $productDetails['name'] ?? 'Unknown' ?></td>

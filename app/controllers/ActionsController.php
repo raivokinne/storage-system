@@ -1,12 +1,12 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Actions;
+use App\Models\Action;
 
 class ActionsController {
     public function index(): void {
-        Actions::all();
-        $actions = Actions::getAll();
+        Action::all();
+        $actions = Action::getAll();
         view("actions/index", compact('actions'));
     }
 }

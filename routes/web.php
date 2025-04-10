@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\ActionsController;
+use App\Controllers\AdminController;
 use App\Controllers\Auth\SessionController;
 use App\Controllers\Auth\UserController;
 use App\Controllers\OrdersController;
@@ -46,5 +47,19 @@ $router->post('/shelves/:id/update', [ShelvesController::class, 'update']);
 $router->get('/shelves/:id/destroy', [ShelvesController::class, 'destroy']);
 
 $router->get('/actions', [ActionsController::class, 'index']);
+
+$router->get('/admin', [AdminController::class, 'index']);
+$router->get('/admin/logs', [AdminController::class, 'actions']);
+$router->get('/admin/users', [AdminController::class, 'users']);
+$router->get('/admin/users/:id/edit', [AdminController::class, 'editUser']);
+$router->post('/admin/users/:id/update', [AdminController::class, 'updateUser']);
+$router->get('/admin/users/:id/terminate', [AdminController::class, 'terminateSession']);
+$router->get('/admin/suppliers', [AdminController::class, 'suppliers']);
+$router->get('/admin/suppliers/create', [AdminController::class, 'createSupplier']);
+$router->post('/admin/suppliers/store', [AdminController::class, 'storeSupplier']);
+$router->get('/admin/products', [AdminController::class, 'products']);
+$router->get('/admin/products/create', [AdminController::class, 'createProduct']);
+$router->post('/admin/products/store', [AdminController::class, 'storeProduct']);
+
 
 $router->post('/profile/image', [UserController::class, 'image']);
